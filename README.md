@@ -17,7 +17,7 @@ Hadoop-1 Settings:
 
 Create a new rule to the inbound/ ingress. Only allow CUHK IP access VMs.
 
-<img src="./README.assets/截屏2023-01-12 17.34.00.png" alt="截屏2023-01-12 16.48.58" style="zoom:80%;" />
+<img src="./README.assets/截屏2023-01-12 17.34.00.png" alt="截屏2023-01-12 17.34.00" style="zoom:80%;" />
 
 ### JDK Install
 
