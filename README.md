@@ -239,7 +239,7 @@ cat id_rsa.pub
 
 ![image-20230116230325846](README.assets/image-20230116230325846.png)
 
-  	Then, put hadoop1's public key into hadoop2's `authorized_keys`.
+​		Then, put hadoop1's public key into hadoop2's `authorized_keys`.
 
 ​		Finally, we can use hadoop2 connect to hadoop1.
 
