@@ -245,7 +245,7 @@ cat id_rsa.pub
 
 ![image-20230116230232485](README.assets/image-20230116230232485.png)
 
- 		*We need ensure every machine could connect each other.*
+​		*We need ensure every machine could connect each other.*
 
 2. Cluster deployment planning.
 
