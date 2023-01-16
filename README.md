@@ -204,6 +204,139 @@ dai_hk@hadoop1:~/opt/module/hadoop-2.9.2$ hadoop jar ./share/hadoop/mapreduce/ha
 
 ###  **Multi-node Hadoop Cluster Setup**
 
+1. Configure host name and IP address mapping.
+
+```SHELL
+sudo vim /etc/hostname
+sudo vim /etc/hosts
+```
+
+`/etc/hosts`:
+
+![image-20230116225423248](README.assets/image-20230116225423248.png)
+
+2. Realize SSH password free login.
+
+![image-20230116225800326](README.assets/image-20230116225800326.png)
+
+​			Generate SSH key pairs, and add it to its own `authorized_keys`.
+
+```shell
+ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 0600 ~/.ssh/authorized_keys
+```
+
+​			ssh localhost succuess.
+
+![image-20230116225841387](README.assets/image-20230116225841387.png)
+
+​			Get generated public key.
+
+```shell
+cat id_rsa.pub
+```
+
+![image-20230116230325846](README.assets/image-20230116230325846.png)
+
+  	Then, put hadoop1's public key into hadoop2's `authorized_keys`.
+
+​		Finally, we can use hadoop2 connect to hadoop1.
+
+![image-20230116230232485](README.assets/image-20230116230232485.png)
+
+ 		*We need ensure every machine could connect each other.*
+
+2. Cluster deployment planning.
+
+|      | Hadoop1               | Hadoop2                         | Hadoop3     | Hadoop4          |
+| ---- | :-------------------- | ------------------------------- | ----------- | ---------------- |
+| HDFS | **NameNode**/DataNode | DataNode                        | DataNode    | **2NN**/DataNode |
+| YARN | NodeManager           | **ResourceManager**/Nodemanager | NodeManager | NodeManager      |
+
+3. Modify configuration files.
+
+`core-site.xml`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+ 	<!-- 指定 NameNode 的地址 -->
+ 	<property>
+ 		<name>fs.defaultFS</name>
+ 		<value>hdfs://35.241.89.168:8020</value>
+ 	</property>
+ 	<!-- 指定 hadoop 数据的存储目录 -->
+ 	<property>
+ 		<name>hadoop.tmp.dir</name>
+ 		<value>/opt/module/hadoop-3.1.3/data</value>
+ 	</property>
+ 	<!-- 配置 HDFS 网页登录使用的静态用户为 atguigu -->
+ 	<property>
+ 		<name>hadoop.http.staticuser.user</name>
+ 		<value>atguigu</value>
+ 	</property>
+</configuration>
+```
+
+`hdfs-site.xml`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+	<!-- nn web 端访问地址-->
+	<property>
+ 		<name>dfs.namenode.http-address</name>
+ 		<value>35.241.89.168:9870</value>
+ 	</property>
+	<!-- 2nn web 端访问地址-->
+ 	<property>
+ 		<name>dfs.namenode.secondary.http-address</name>
+ 		<value>35.92.131.195:9868</value>
+ 	</property>
+</configuration>
+```
+
+`yarn-site.xml`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+ 	<!-- 指定 MR 走 shuffle -->
+ 	<property>
+ 		<name>yarn.nodemanager.aux-services</name>
+ 		<value>mapreduce_shuffle</value>
+ 	</property>
+ 	<!-- 指定 ResourceManager 的地址-->
+ 	<property>
+ 		<name>yarn.resourcemanager.hostname</name>
+ 		<value>35.220.236.25</value>
+ 	</property>
+ 	<!-- 环境变量的继承 -->
+ 	<property>
+        <name>yarn.nodemanager.env-whitelist</name>			<value>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_MAPRED_HOME</value>
+ 	</property>
+</configuration>
+```
+
+`mapred-site.xml`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+	<!-- 指定 MapReduce 程序运行在 Yarn 上 -->
+ 	<property>
+ 		<name>mapreduce.framework.name</name>
+ 		<value>yarn</value>
+ 	</property>
+</configuration>
+
+```
+
 
 
 ### **Wordcount**
