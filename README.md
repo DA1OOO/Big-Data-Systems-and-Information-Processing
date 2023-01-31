@@ -1,6 +1,26 @@
 # Big-Data-Systems-and-Information-Processing
 
-## 1. Hadoop Cluster Setup
+
+
+
+
+[TOC]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <img src="./README.assets/截屏2023-01-12 16.48.58.png" alt="截屏2023-01-12 16.48.58" style="zoom:50%;" />
 
@@ -168,7 +188,7 @@ jps
 
 ​				Single hadoop cluster installation success.
 
-### **Run Terasort Example**
+### **Run Terasort Example**(Single Node)
 
 1. Generate data for sort.
 
@@ -247,14 +267,14 @@ cat id_rsa.pub
 
 ​		*We need ensure every machine could connect each other.*
 
-2. Cluster deployment planning.
+3. Cluster deployment planning.
 
-|      | Hadoop1               | Hadoop2                         | Hadoop3     | Hadoop4          |
-| ---- | :-------------------- | ------------------------------- | ----------- | ---------------- |
-| HDFS | **NameNode**/DataNode | DataNode                        | DataNode    | **2NN**/DataNode |
-| YARN | NodeManager           | **ResourceManager**/Nodemanager | NodeManager | NodeManager      |
+|      | Hadoop1          | Hadoop2                         | Hadoop3     | Hadoop4     |
+| ---- | :--------------- | ------------------------------- | ----------- | ----------- |
+| HDFS | **NameNode**/2NN | DataNode                        | DataNode    | DataNode    |
+| YARN |                  | **ResourceManager**/Nodemanager | NodeManager | NodeManager |
 
-3. Modify configuration files.
+4. Modify configuration files.
 
 `core-site.xml`:
 
@@ -265,17 +285,17 @@ cat id_rsa.pub
  	<!-- 指定 NameNode 的地址 -->
  	<property>
  		<name>fs.defaultFS</name>
- 		<value>hdfs://35.241.89.168:8020</value>
+ 		<value>hdfs://hadoop1:9000</value>
  	</property>
  	<!-- 指定 hadoop 数据的存储目录 -->
  	<property>
  		<name>hadoop.tmp.dir</name>
- 		<value>/opt/module/hadoop-3.1.3/data</value>
+ 		<value>/opt/module/hadoop-2.9.2/data</value>
  	</property>
- 	<!-- 配置 HDFS 网页登录使用的静态用户为 atguigu -->
+ 	<!-- 配置 HDFS 网页登录使用的静态用户为 dai_hk -->
  	<property>
  		<name>hadoop.http.staticuser.user</name>
- 		<value>atguigu</value>
+ 		<value>dai_hk</value>
  	</property>
 </configuration>
 ```
@@ -286,16 +306,18 @@ cat id_rsa.pub
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
-	<!-- nn web 端访问地址-->
-	<property>
- 		<name>dfs.namenode.http-address</name>
- 		<value>35.241.89.168:9870</value>
- 	</property>
-	<!-- 2nn web 端访问地址-->
- 	<property>
- 		<name>dfs.namenode.secondary.http-address</name>
- 		<value>35.92.131.195:9868</value>
- 	</property>
+    <property>
+        <name>dfs.replication</name>
+        <value>3</value>
+    </property>
+    <property>
+        <name>dfs.namenode.secondary.http-address</name>
+        <value>hadoop1:50090</value>
+    </property>
+    <property>
+        <name>dfs.namenode.secondary.https-address</name>
+        <value>hadoop1:50091</value>
+    </property>
 </configuration>
 ```
 
@@ -313,11 +335,7 @@ cat id_rsa.pub
  	<!-- 指定 ResourceManager 的地址-->
  	<property>
  		<name>yarn.resourcemanager.hostname</name>
- 		<value>35.220.236.25</value>
- 	</property>
- 	<!-- 环境变量的继承 -->
- 	<property>
-        <name>yarn.nodemanager.env-whitelist</name>			<value>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_MAPRED_HOME</value>
+ 		<value>hadoop2</value>
  	</property>
 </configuration>
 ```
@@ -337,48 +355,166 @@ cat id_rsa.pub
 
 ```
 
+`slaves`:
 
+```xml
+hadoop2
+hadoop3
+hadoop4
+```
 
-### **Wordcount**
+​	5. Then use command `rsync` copy file to hadoop2, hadoop3, hadoop4.
 
-1. Create a file folder called `/wcinpt`.
+```shell
+rsync -av /home/dai_hk/opt/module/hadoop-2.9.2/etc/hadoop/ dai_hk@hadoop2:/home/dai_hk/opt/module/hadoop-2.9.2/etc/hadoop/
+```
 
-   ```shell 
-   mkdir /wcinput
-   ```
+6. Format name node.
 
-2. Creat a txt file `word.txt`, input some random strings.
+```shell
+hdfs namenode -format
+```
 
-   ```shell
-   vim word.txt
-   ```
+7. Start HDFS and YARN.
 
-   Enter some strings:
+```shel
+start-hdfs.sh
+start-yarn.sh
+```
 
-   <img src="README.assets/image-20230113173818624.png" alt="image-20230113173818624" style="zoom:67%;" />
+8. Enter hdfs system at `hadoop1:50070` in browser
 
-3. Enter Hadoop-2.9.2 file, then open `hadoop-mapreduce-examples-2.9.2`, execute **wordcount** commands, using `/wcinput` as input, and output to `/wcoutput`.
+![image-20230120132900659](README.assets/image-20230120132900659.png)
 
-   ```shell
-   hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.9.2.jar wordcount wcinput/ wcoutput
-   ```
+![image-20230120132954695](README.assets/image-20230120132954695.png)
 
-<img src="README.assets/image-20230113172656667.png" alt="image-20230113172656667" style="zoom:67%;" />
+9. Enter yarn system at `hadoop2:8088`.
 
-4. Watch the result of **wordcount** program.
+![image-20230120133706819](README.assets/image-20230120133706819.png)
 
-   <img src="README.assets/image-20230113173530630.png" alt="image-20230113173530630" style="zoom:67%;" />
+10. Use `jps` to watch nodes situations.
 
-   ```shell
-   vim part-r-0000
-   ```
+![image-20230120133112001](README.assets/image-20230120133112001.png)
 
-   **wordcount** result as following picture show:
+![image-20230120133820923](README.assets/image-20230120133820923.png)
 
-​					<img src="README.assets/image-20230113173557389.png" alt="image-20230113173557389" style="zoom:67%;" />
+![image-20230120133151110](README.assets/image-20230120133151110.png)
 
-### Reference
+![image-20230120133209777](README.assets/image-20230120133209777.png)
+
+### **Run Terasort Example**(Mutil Node)
+
+1. Generate **2GB** data.
+
+```shell
+hadoop jar ./share/hadoop/mapreduce/hadoop-mapreduce-examples-2.9.2.jar teragen 21474836 terasort/input
+```
+
+![image-20230120160816595](README.assets/image-20230120160816595.png)
+
+2. Terasort **2GB** data.
+
+```shel
+hadoop jar ./share/hadoop/mapreduce/hadoop-mapreduce-examples-2.9.2.jar terasort terasort/input terasort/output
+```
+
+​		Running...
+
+![image-20230120161012761](README.assets/image-20230120161012761.png)
+
+​	Using **1mins,49sec** finish task to sort 2GB data.
+
+![image-20230120161153584](README.assets/image-20230120161153584.png)
+
+3. Generate **20GB** data.
+
+```shell
+hadoop jar ./share/hadoop/mapreduce/hadoop-mapreduce-examples-2.9.2.jar teragen 214748360 terasort/input
+```
+
+​		Generate...
+
+![image-20230120161649365](README.assets/image-20230120161649365.png)
+
+​		Generated.
+
+![image-20230120161738385](README.assets/image-20230120161738385.png)
+
+4. Terasort **20GB** data.
+
+```shell
+hadoop jar ./share/hadoop/mapreduce/hadoop-mapreduce-examples-2.9.2.jar terasort terasort/input terasort/output
+```
+
+​		Running...
+
+![image-20230120161918236](README.assets/image-20230120161918236.png)
+
+![image-20230120162247406](README.assets/image-20230120162247406.png)
+
+​		Terasort finished. **4hr,24mins,47sec.**
+
+![image-20230120204859880](README.assets/image-20230120204859880.png)
+
+![image-20230120204945871](README.assets/image-20230120204945871.png)
+
+### **Running the Python Code on Hadoop**
+
+1. Start python code.
+
+```shell
+hadoop jar ./share/hadoop/tools/lib/hadoop-streaming-2.9.2.jar -file mapper.py -mapper mapper.py -file reducer.py -reducer reducer.py -input shakespeare -output output
+```
+
+2. Successed ! Use **19sec.**
+
+![image-20230121011338347](README.assets/image-20230121011338347.png)
+
+![image-20230121011349534](README.assets/image-20230121011349534.png)
+
+![image-20230121011537918](README.assets/image-20230121011537918.png)
+
+![image-20230121011634834](README.assets/image-20230121011634834.png)
+
+### **Running the Java Code on Hadoop**
+
+1. Creat java file, and put wordcount code in it.
+2. Add environmental variables.
+
+```shell
+export JAVA_HOME=/usr/java/default
+export PATH=${JAVA_HOME}/bin:${PATH}
+export HADOOP_CLASSPATH=${JAVA_HOME}/lib/tools.jar
+```
+
+3. Complile `WordCount.java`. Generate jar file.
+
+```shell
+hadoop com.sun.tools.javac.Main WordCount.java
+jar cf wc.jar WordCount*.class
+```
+
+4. Execute jar file.
+
+```shell
+hadoop jar wc.jar WordCount wordcount/input wordcount/output
+```
+
+​		Success ! Use **21sec.**
+
+![image-20230121094805376](README.assets/image-20230121094805376.png)
+
+![image-20230121095041430](README.assets/image-20230121095041430.png)
+
+### **Python Running Time and Java Running Time**
+
+Python code uses **19sec.**
+
+Java code uses **21sec.**
+
+### **Reference**
 
 1. Setting up a Single Node Cluster. https://hadoop.apache.org/docs/r2.9.2/hadoop-project-dist/hadoop-common/SingleCluster.html
-
 2.  Terasort example.https://hadoop.apache.org/docs/r2.9.2/hadoop-project-dist/hadoop-common/ClusterSetup.html
+2.  Python wordcount:https://www.michael-noll.com/tutorials/writing-an-hadoop-mapreduce-program-in-python/
+2.  Java wordcount:https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Example:_WordCount_v1.0
