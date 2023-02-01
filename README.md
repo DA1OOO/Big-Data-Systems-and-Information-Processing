@@ -514,7 +514,7 @@ Java code uses **21sec.**
 
 
 
-## Community Detection
+## MapReduce ( Community Detection )
 
 
 
