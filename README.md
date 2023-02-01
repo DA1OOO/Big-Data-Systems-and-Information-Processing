@@ -20,11 +20,11 @@
 
 
 
-
+## Cluster Setup
 
 <img src="./README.assets/截屏2023-01-12 16.48.58.png" alt="截屏2023-01-12 16.48.58" style="zoom:50%;" />
 
-### **Create Virtual Machine**
+###  **1. Create Virtual Machine**
 
 Hadoop-1 Settings:
 
@@ -33,13 +33,13 @@ Hadoop-1 Settings:
 3. 8G RAM
 4. 2 CPU core
 
-### **Firewall Settings**
+###  **2. Firewall Settings**
 
 Create a new rule to the inbound/ ingress. Only allow CUHK IP access VMs.
 
 <img src="./README.assets/截屏2023-01-12 17.34.00.png" alt="截屏2023-01-12 17.34.00" style="zoom:80%;" />
 
-### **JDK Install**
+### **3. JDK Install**
 
 1. Download jdk8 from Oracle, and import it into hadoop-1 virtual machine.
 
@@ -87,7 +87,7 @@ Create a new rule to the inbound/ ingress. Only allow CUHK IP access VMs.
 
    ![image-20230113112200916](README.assets/image-20230113112200916.png)
 
-### **Hadoop Install**
+### **4. Hadoop Install**
 
 1. Download `hadoop-2.9.2.tar.gz`
 
@@ -134,7 +134,7 @@ The following figure shows that the Hadoop installation was successful.
 
 <img src="README.assets/image-20230113170224422.png" alt="image-20230113170224422" style="zoom: 50%;" />
 
-### **Single-node Hadoop Setup**
+### **5. Single-node Hadoop Setup**
 
 1. Modify ` etc/hadoop/core-site.xml`[1]:
 
@@ -188,7 +188,7 @@ jps
 
 ​				Single hadoop cluster installation success.
 
-### **Run Terasort Example**(Single Node)
+### **6. Run Terasort Example**(Single Node)
 
 1. Generate data for sort.
 
@@ -222,7 +222,7 @@ dai_hk@hadoop1:~/opt/module/hadoop-2.9.2$ hadoop jar ./share/hadoop/mapreduce/ha
 
 <img src="README.assets/image-20230114164508204.png" alt="image-20230114164508204" style="zoom: 67%;" />
 
-###  **Multi-node Hadoop Cluster Setup**
+###  **7. Multi-node Hadoop Cluster Setup**
 
 1. Configure host name and IP address mapping.
 
@@ -402,7 +402,7 @@ start-yarn.sh
 
 ![image-20230120133209777](README.assets/image-20230120133209777.png)
 
-### **Run Terasort Example**(Mutil Node)
+### **8. Run Terasort Example**(Mutil Node)
 
 1. Generate **2GB** data.
 
@@ -458,7 +458,7 @@ hadoop jar ./share/hadoop/mapreduce/hadoop-mapreduce-examples-2.9.2.jar terasort
 
 ![image-20230120204945871](README.assets/image-20230120204945871.png)
 
-### **Running the Python Code on Hadoop**
+### **9. Running the Python Code on Hadoop**
 
 1. Start python code.
 
@@ -476,7 +476,7 @@ hadoop jar ./share/hadoop/tools/lib/hadoop-streaming-2.9.2.jar -file mapper.py -
 
 ![image-20230121011634834](README.assets/image-20230121011634834.png)
 
-### **Running the Java Code on Hadoop**
+### **10. Running the Java Code on Hadoop**
 
 1. Creat java file, and put wordcount code in it.
 2. Add environmental variables.
@@ -506,13 +506,19 @@ hadoop jar wc.jar WordCount wordcount/input wordcount/output
 
 ![image-20230121095041430](README.assets/image-20230121095041430.png)
 
-### **Python Running Time and Java Running Time**
+### **11. Python Running Time and Java Running Time**
 
 Python code uses **19sec.**
 
 Java code uses **21sec.**
 
-### **Reference**
+
+
+## Community Detection
+
+
+
+## **Reference**
 
 1. Setting up a Single Node Cluster. https://hadoop.apache.org/docs/r2.9.2/hadoop-project-dist/hadoop-common/SingleCluster.html
 2.  Terasort example.https://hadoop.apache.org/docs/r2.9.2/hadoop-project-dist/hadoop-common/ClusterSetup.html
