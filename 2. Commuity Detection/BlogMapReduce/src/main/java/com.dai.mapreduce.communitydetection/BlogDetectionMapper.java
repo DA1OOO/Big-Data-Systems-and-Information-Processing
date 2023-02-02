@@ -36,6 +36,7 @@ public class BlogDetectionMapper extends Mapper<LongWritable, Text, LongWritable
         outKey.set(Long.parseLong(words[0]));
         // 被关注者作为value
         outValue.set(Long.parseLong(words[1]));
+        // 将数据分割为 K-V 键值对
         context.write(outKey, outValue);
     }
 }

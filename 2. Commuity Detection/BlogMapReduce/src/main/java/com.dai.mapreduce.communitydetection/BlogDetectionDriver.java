@@ -27,7 +27,7 @@ public class BlogDetectionDriver {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
         // 6. 设置输入输出路径
-        FileInputFormat.setInputPaths(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2. Commuity Detection\\medium\\medium"));
+        FileInputFormat.setInputPaths(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2. Commuity Detection\\input\\small\\small_relation"));
         FileOutputFormat.setOutputPath(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2. Commuity Detection\\output"));
         // 7. 提交job
         boolean result = job.waitForCompletion(true);

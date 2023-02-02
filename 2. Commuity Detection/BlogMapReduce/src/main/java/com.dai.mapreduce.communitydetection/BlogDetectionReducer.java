@@ -3,10 +3,9 @@ package com.dai.mapreduce.communitydetection;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * reducer 层接受 mapper 的 OUT
@@ -14,9 +13,10 @@ import java.util.List;
  * IN: 每对图关系 A->B
  * output 格式:s A:B, {C,E}, 2
  */
-public class BlogDetectionReducer extends Reducer<LongWritable, LongWritable, Text, Text> {
-    private Text outKey = new Text("1");
-    private Text outValue = new Text("0");
+public class BlogDetectionReducer extends Reducer<LongWritable, LongWritable, LongWritable, Text> {
+    private LongWritable outKey = new LongWritable();
+    private Text outValue = new Text();
+    private Set<Long> set = new HashSet<Long>();
 
     /**
      * 重写reduce方法，每个key都会运行一次reduce方法
@@ -27,11 +27,14 @@ public class BlogDetectionReducer extends Reducer<LongWritable, LongWritable, Te
      * @throws InterruptedException
      */
     @Override
-    protected void reduce(LongWritable key, Iterable<LongWritable> values, Reducer<LongWritable, LongWritable, Text, Text>.Context context) throws IOException, InterruptedException {
-        List<LongWritable> list = new ArrayList<LongWritable>();
+    protected void reduce(LongWritable key, Iterable<LongWritable> values, Reducer<LongWritable, LongWritable, LongWritable, Text>.Context context) throws IOException, InterruptedException {
         for (LongWritable value : values) {
-            list.add(value);
+            // KEY的关注对象的组合
+            set.add(value.get());
         }
+        outKey.set(key.get());
+        outValue.set(set.toString());
+        set.clear();
         // 写出输出数据到上下文
         context.write(outKey, outValue);
     }
