@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6189c175-3a71-4e47-9e81-2e19cccc96a8" name="Changes" comment="java mapper commit">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionDriver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionReducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionReducer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hw1_community_detection.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../hw1_community_detection.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,24 +35,20 @@
         <option name="useMavenConfig" value="true" />
       </MavenGeneralSettings>
     </option>
-    <option name="importingSettings">
-      <MavenImportingSettings>
-        <option name="workspaceImportEnabled" value="true" />
-      </MavenImportingSettings>
-    </option>
   </component>
   <component name="ProjectId" id="2L8YzZlfQelp4xD4mi8ZaTpjlzX" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/Users/daiyayun/Desktop/Big-Data-Systems-and-Information-Processing/2. Commuity Detection/BlogMapReduce"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Desktop/Big-Data-Systems-and-Information-Processing/2. Commuity Detection/BlogMapReduce&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
