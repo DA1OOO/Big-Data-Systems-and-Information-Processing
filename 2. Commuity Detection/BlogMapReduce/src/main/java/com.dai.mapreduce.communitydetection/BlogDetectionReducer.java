@@ -15,8 +15,8 @@ import java.util.List;
  * output 格式:s A:B, {C,E}, 2
  */
 public class BlogDetectionReducer extends Reducer<LongWritable, LongWritable, Text, Text> {
-    private Text outKey = new Text();
-    private Text outValue = new Text();
+    private Text outKey = new Text("1");
+    private Text outValue = new Text("0");
 
     /**
      * 重写reduce方法，每个key都会运行一次reduce方法

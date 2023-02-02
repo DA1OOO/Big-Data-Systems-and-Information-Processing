@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6189c175-3a71-4e47-9e81-2e19cccc96a8" name="Changes" comment="java mapper commit">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="6189c175-3a71-4e47-9e81-2e19cccc96a8" name="Changes" comment="reducer / driver commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionDriver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionReducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionReducer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,13 +40,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Desktop/Big-Data-Systems-and-Information-Processing/2. Commuity Detection/BlogMapReduce&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/Administrator/Desktop/Big-Data-Systems-and-Information-Processing/2. Commuity Detection/BlogMapReduce",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler"
   }
-}</component>
+}]]></component>
+  <component name="RunManager">
+    <configuration name="BlogDetectionDriver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.dai.mapreduce.communitydetection.BlogDetectionDriver" />
+      <module name="BlogMapReduce" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.dai.mapreduce.communitydetection.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.BlogDetectionDriver" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -79,16 +101,35 @@
       <option name="project" value="LOCAL" />
       <updated>1675259192520</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="reducer / driver commit">
+      <created>1675308453506</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1675308453506</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="dependencySupport" implementationName="java:com.google.protobuf:protobuf-java" />
     <option featureType="dependencySupport" implementationName="java:org.apache.hadoop:hadoop-common" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="mapreduce init" />
     <MESSAGE value="java mapper commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="java mapper commit" />
+    <MESSAGE value="reducer / driver commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="reducer / driver commit" />
   </component>
 </project>
