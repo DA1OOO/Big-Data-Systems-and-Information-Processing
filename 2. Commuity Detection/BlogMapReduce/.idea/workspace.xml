@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6189c175-3a71-4e47-9e81-2e19cccc96a8" name="Changes" comment="MapReduce3提交">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce3/BlogDetection3Driver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce3/BlogDetection3Mapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce3/BlogDetection3Reducer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce2/BlogDetection2Driver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce2/BlogDetection2Driver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce2/BlogDetection2Reducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce2/BlogDetection2Reducer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +44,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/Administrator/Desktop/Big-Data-Systems-and-Information-Processing/2. Commuity Detection/BlogMapReduce/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce3",
+    "last_opened_file_path": "C:/Users/Administrator/Desktop/Big-Data-Systems-and-Information-Processing",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -109,7 +104,6 @@
       <list>
         <item itemvalue="Application.BlogDetection3Driver" />
         <item itemvalue="Application.BlogDetection2Driver" />
-        <item itemvalue="Application.com.dai.mapreduce.communitydetection.taskA.mapreduce1.BlogDetection1Driver" />
       </list>
     </recent_temporary>
   </component>
@@ -192,7 +186,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675413795389</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="MapReduce3提交">
+      <created>1675422158399</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1675422158399</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="UnknownFeatures">
