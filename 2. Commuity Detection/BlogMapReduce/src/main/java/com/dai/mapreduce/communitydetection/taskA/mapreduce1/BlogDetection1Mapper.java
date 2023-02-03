@@ -13,7 +13,7 @@ import java.io.IOException;
  * KEYOUT: map阶段输出的key
  * VALUEOUT: may阶段输出的value
  */
-public class BlogDetectionMapper extends Mapper<LongWritable, Text, LongWritable, LongWritable> {
+public class BlogDetection1Mapper extends Mapper<LongWritable, Text, LongWritable, LongWritable> {
     // 该map输出的key
     private LongWritable outKey = new LongWritable();
     // 该map输出的value

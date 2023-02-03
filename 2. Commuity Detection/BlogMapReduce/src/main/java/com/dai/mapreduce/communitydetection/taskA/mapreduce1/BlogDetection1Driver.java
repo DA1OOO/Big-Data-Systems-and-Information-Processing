@@ -10,18 +10,18 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import java.io.IOException;
 
-public class BlogDetectionDriver {
+public class BlogDetection1Driver {
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
         // 1. 获取job
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf);
 
         // 2. 设置jar包路径
-        job.setJarByClass(BlogDetectionDriver.class);
+        job.setJarByClass(BlogDetection1Driver.class);
 
         // 3. 关联 mapper 和 reducer
-        job.setMapperClass(BlogDetectionMapper.class);
-        job.setReducerClass(BlogDetectionReducer.class);
+        job.setMapperClass(BlogDetection1Mapper.class);
+        job.setReducerClass(BlogDetection1Reducer.class);
 
         // 4. 设置 mapper 输出的KV类型
         job.setMapOutputKeyClass(LongWritable.class);

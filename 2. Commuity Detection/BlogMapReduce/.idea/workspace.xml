@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6189c175-3a71-4e47-9e81-2e19cccc96a8" name="Changes" comment="支持自定义输入输出路径">
+    <list default="true" id="6189c175-3a71-4e47-9e81-2e19cccc96a8" name="Changes" comment="文件结构调整">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce2/BlogDetection2Driver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce2/BlogDetection2Mapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce2/BlogDetection2Reducer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionReducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionReducer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce1/BlogDetectionDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce1/BlogDetection1Driver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce1/BlogDetectionMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce1/BlogDetection1Mapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce1/BlogDetectionReducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce1/BlogDetection1Reducer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,20 +45,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Desktop/Big-Data-Systems-and-Information-Processing/2. Commuity Detection/BlogMapReduce&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.javacompiler&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/Administrator/Desktop/Big-Data-Systems-and-Information-Processing/2. Commuity Detection/BlogMapReduce/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce2",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler"
   }
-}</component>
-  <component name="RunManager">
-    <configuration name="com.dai.mapreduce.communitydetection.taskA.mapreduce1.BlogDetectionDriver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.dai.mapreduce.communitydetection.taskA.mapreduce1.BlogDetectionDriver" />
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Desktop\Big-Data-Systems-and-Information-Processing\2. Commuity Detection\BlogMapReduce\src\main\java\com\dai\mapreduce\communitydetection\taskA\mapreduce2" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.dai.mapreduce.communitydetection" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.BlogDetection2Driver">
+    <configuration name="BlogDetection1Driver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.dai.mapreduce.communitydetection.taskA.mapreduce1.BlogDetection1Driver" />
       <module name="BlogMapReduce" />
       <extension name="coverage">
         <pattern>
@@ -66,9 +78,23 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="BlogDetection2Driver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.dai.mapreduce.communitydetection.taskA.mapreduce2.BlogDetection2Driver" />
+      <module name="BlogMapReduce" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.dai.mapreduce.communitydetection.taskA.mapreduce2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.com.dai.mapreduce.communitydetection.taskA.mapreduce1.BlogDetectionDriver" />
+        <item itemvalue="Application.BlogDetection2Driver" />
+        <item itemvalue="Application.com.dai.mapreduce.communitydetection.taskA.mapreduce1.BlogDetection1Driver" />
       </list>
     </recent_temporary>
   </component>
@@ -137,7 +163,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675328789823</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="文件结构调整">
+      <created>1675398063465</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1675398063465</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -161,6 +194,24 @@
     <MESSAGE value="reducer / driver commit" />
     <MESSAGE value="MapReduce demo commit" />
     <MESSAGE value="支持自定义输入输出路径" />
-    <option name="LAST_COMMIT_MESSAGE" value="支持自定义输入输出路径" />
+    <MESSAGE value="文件结构调整" />
+    <option name="LAST_COMMIT_MESSAGE" value="文件结构调整" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/dai/mapreduce/communitydetection/taskA/mapreduce2/BlogDetection2Mapper.java</url>
+          <line>22</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="outValue" language="JAVA" />
+        <watch expression="followees[80]" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

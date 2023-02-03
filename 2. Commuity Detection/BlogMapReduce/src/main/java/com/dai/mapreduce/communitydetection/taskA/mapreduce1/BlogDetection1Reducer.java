@@ -13,7 +13,7 @@ import java.util.Set;
  * IN: 每对图关系 A->B
  * output 格式:    K - A : V - B,C,D (A : A的粉丝)
  */
-public class BlogDetectionReducer extends Reducer<LongWritable, LongWritable, LongWritable, Text> {
+public class BlogDetection1Reducer extends Reducer<LongWritable, LongWritable, LongWritable, Text> {
     private LongWritable outKey = new LongWritable();
     private Text outValue = new Text();
     private Set<Long> set = new HashSet<Long>();
