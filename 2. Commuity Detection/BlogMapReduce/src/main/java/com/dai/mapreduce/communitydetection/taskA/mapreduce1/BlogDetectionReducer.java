@@ -1,4 +1,4 @@
-package com.dai.mapreduce.communitydetection;
+package com.dai.mapreduce.communitydetection.taskA.mapreduce1;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -11,7 +11,7 @@ import java.util.Set;
  * reducer 层接受 mapper 的 OUT
  * KEYIN 和 VALUEIN 与 mapper的 OUT 保持一致
  * IN: 每对图关系 A->B
- * output 格式:s A:B, {C,E}, 2
+ * output 格式:    K - A : V - B,C,D (A : A的粉丝)
  */
 public class BlogDetectionReducer extends Reducer<LongWritable, LongWritable, LongWritable, Text> {
     private LongWritable outKey = new LongWritable();

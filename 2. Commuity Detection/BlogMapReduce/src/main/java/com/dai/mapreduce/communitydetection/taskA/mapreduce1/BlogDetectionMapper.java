@@ -1,4 +1,4 @@
-package com.dai.mapreduce.communitydetection;
+package com.dai.mapreduce.communitydetection.taskA.mapreduce1;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -8,8 +8,8 @@ import java.io.IOException;
 /**
  * Task a: 寻找两篇博客的共同关注
  * Input: _relation
- * KEYIN: map阶段的输入的key的类型，每次读取的偏移量 LongWritable
- * VALUEIN: map阶段输入的value Text: 读取一整行
+ * KEYIN: map阶段的输入的key的类型，默认为每次读取的偏移量 LongWritable
+ * VALUEIN: map阶段输入的value Text: 默认为读取一整行的内容
  * KEYOUT: map阶段输出的key
  * VALUEOUT: may阶段输出的value
  */
@@ -30,7 +30,7 @@ public class BlogDetectionMapper extends Mapper<LongWritable, Text, LongWritable
     protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, LongWritable, LongWritable>.Context context) throws IOException, InterruptedException {
         // 获取一行
         String line = value.toString();
-        // 用空格将一行中的两个数据进行切割 [A，B] 表示A follow B
+        // 用空格将一行中的两个数据进行切割 [A，B] 表示B follow A
         String[] words = line.split(" ");
         // 关注者作为key
         outKey.set(Long.parseLong(words[0]));

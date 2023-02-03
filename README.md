@@ -6,7 +6,7 @@
 
 [TOC]
 
-
+------
 
 
 
@@ -516,7 +516,117 @@ Java code uses **21sec.**
 
 ## MapReduce ( Community Detection )
 
+### 1. Create **Maven** Project.
 
+​	Using `pom.xml` to manage dependencies:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.dai</groupId>
+	<artifactId>BlogMapReduce</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>BlogMapReduce</name>
+	<description>Demo project for Blog MapReducce</description>
+	<properties>
+		<maven.complier.source>8</maven.complier.source>
+		<maven.complier.target>8</maven.complier.target>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-client</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.30</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.1</version>
+				<configuration>
+				<!--使用java1.8编译-->
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+
+```
+
+### 2. Task A
+
+> For EVERY blog, recommend the blog with the maximal number of common followees in the medium-sized dataset [2]. If multiple blogs share the same number, pick the one with the largest ID. Your output should consist of m lines, where m is the total number of blogs. Each line follows the format below: A:B, {C,E}, 2 where “A:B” is the blog pair, “{C,E}” is the set of their common followees (no special requirement for the elements’ order, i.e., {E,C} is acceptable), “2” is the count of common followees.
+
+#### MapReduce 1
+
+​		Merge original data, get new K-V. **K is followee, and V contains K's followers.**
+
+<img src="README.assets/image-20230203121108423.png" alt="image-20230203121108423" style="zoom:80%;" />
+
+`Mapper`:
+
+```java
+```
+
+`Reducer`:
+
+```java
+```
+
+`Driver`:
+
+```java
+
+```
+
+#### MapReduce 2
+
+
+
+#### MapReduce 3
+
+### 3. Task B
+
+>  Find the TOP K (K=3) most similar blogs of EVERY blog as well as their common followees for the medium-sized dataset [2]. If multiple blogs have the same similarity, randomly pick three of them. For each pair of blogs, output a line with the following format: 
+>
+> ​															A:B, {C,E}, simscore ········································(F1) 
+>
+> ( where “simscore” is the similarity score between A and B. )
+
+### 4. Task C
+
+> In fact, each blog is annotated with a label indicating its community. In each dataset, a label file is provided, with the first column indicating the blog ID and the second column indicating the label value. For example, the small dataset has seven different labels (the value ranges from 0 to 6), which means that each blog is from one of the seven communities. For each community in the medium dataset, please figure out how many (unique) members act as the common followees of other blogs. (For example, suppose that A, B, C, D, E are labeled with community 0, 1, 2, 1, 2, respectively. Then, for community 0, one of its members (blog A) acts as the common followee of others (blog B and D). As for community 1, none of its members is the common followee of others.) Your reported results should be formatted like the following example:  
+>
+> Community 0: 1 
+>
+> Community 1: 0 
+>
+> Community 2: 2
+
+### 5. Task D
+
+> Run part (a) for the medium dataset multiple times while modifying the number of mappers and reducers for your MapReduce job(s) each time. You need to examine and report the performance of your program for at least 4 different runs. Each run should use a different combination of the number of mappers and reducers. For each run, performance statistics to be reported should include: (i) the time consumed by the entire MapReduce job(s); (ii) the maximum, minimum and average time consumed by mapper and reducer tasks; (iii) tabulate the time consumption for each MapReduce job and its tasks. (One example is given in the following table.) Moreover, describe (and explain, if possible) your observations.
+>
+> ![image-20230203115223559](README.assets/image-20230203115223559.png)
+
+### 6. Task E
+
+> Find the TOP K (K=3) most similar blogs and the list of common followees for each blog in the large dataset in [3] using the format of Q1(b). (Hints: To reduce the memory consumption of your program, you may consider using the composite key design pattern and secondary sorting techniques as discussed in [7] and [8]).
 
 ## **Reference**
 
@@ -524,3 +634,4 @@ Java code uses **21sec.**
 2.  Terasort example.https://hadoop.apache.org/docs/r2.9.2/hadoop-project-dist/hadoop-common/ClusterSetup.html
 2.  Python wordcount:https://www.michael-noll.com/tutorials/writing-an-hadoop-mapreduce-program-in-python/
 2.  Java wordcount:https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Example:_WordCount_v1.0
+2.  Community Detection MapReduce:https://blog.csdn.net/qq_45347768/article/details/127498788

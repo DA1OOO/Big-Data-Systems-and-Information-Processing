@@ -1,4 +1,4 @@
-package com.dai.mapreduce.communitydetection;
+package com.dai.mapreduce.communitydetection.taskA.mapreduce1;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;

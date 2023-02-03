@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6189c175-3a71-4e47-9e81-2e19cccc96a8" name="Changes" comment="MapReduce demo commit">
+    <list default="true" id="6189c175-3a71-4e47-9e81-2e19cccc96a8" name="Changes" comment="支持自定义输入输出路径">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionDriver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../medium.tar.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../small.tar.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionReducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com.dai.mapreduce.communitydetection/BlogDetectionReducer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,12 +53,12 @@
   }
 }</component>
   <component name="RunManager">
-    <configuration name="BlogDetectionDriver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.dai.mapreduce.communitydetection.BlogDetectionDriver" />
+    <configuration name="com.dai.mapreduce.communitydetection.taskA.mapreduce1.BlogDetectionDriver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.dai.mapreduce.communitydetection.taskA.mapreduce1.BlogDetectionDriver" />
       <module name="BlogMapReduce" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.dai.mapreduce.communitydetection.*" />
+          <option name="PATTERN" value="com.dai.mapreduce.communitydetection.taskA.mapreduce1.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -70,7 +68,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.BlogDetectionDriver" />
+        <item itemvalue="Application.com.dai.mapreduce.communitydetection.taskA.mapreduce1.BlogDetectionDriver" />
       </list>
     </recent_temporary>
   </component>
@@ -132,7 +130,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675326571963</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="支持自定义输入输出路径">
+      <created>1675328789823</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1675328789823</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -155,6 +160,7 @@
     <MESSAGE value="java mapper commit" />
     <MESSAGE value="reducer / driver commit" />
     <MESSAGE value="MapReduce demo commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="MapReduce demo commit" />
+    <MESSAGE value="支持自定义输入输出路径" />
+    <option name="LAST_COMMIT_MESSAGE" value="支持自定义输入输出路径" />
   </component>
 </project>
