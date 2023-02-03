@@ -17,15 +17,17 @@ public class BlogDetection3Reducer extends Reducer<LongWritable, Text, LongWrita
 
     @Override
     protected void reduce(LongWritable key, Iterable<Text> values, Reducer<LongWritable, Text, LongWritable, Text>.Context context) throws IOException, InterruptedException {
-        maxCommonBlogNums = 0;
         outKey.set(key.get());
+        maxCommonBlogNums = 0;
+        // 记录当前的A:B 中的B的大小
         Long tempFlag = Long.valueOf(0);
         for (Text value : values) {
             String[] words = value.toString().split("\\|");
             String[] commonBlog = words[1].split(", ");
             if (commonBlog.length > maxCommonBlogNums) {
                 outValue.set(key + ":" + words[0] + "," + words[1] + "," + commonBlog.length);
-                tempFlag = Long.parseLong(words[0]);
+                maxCommonBlogNums = commonBlog.length;
+                tempFlag = Long.valueOf(words[0]);
             }
             if (commonBlog.length == maxCommonBlogNums) {
                 if (Long.parseLong(words[0]) > tempFlag) {

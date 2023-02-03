@@ -32,9 +32,9 @@ public class BlogDetection1Mapper extends Mapper<LongWritable, Text, LongWritabl
         String line = value.toString();
         // 用空格将一行中的两个数据进行切割 [A，B] 表示B follow A
         String[] words = line.split(" ");
-        // 关注者作为key
+        // 被关注者作为key
         outKey.set(Long.parseLong(words[0]));
-        // 被关注者作为value
+        // 关注者作为value
         outValue.set(Long.parseLong(words[1]));
         // 将数据分割为 K-V 键值对
         context.write(outKey, outValue);

@@ -4,8 +4,8 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * reducer 层接受 mapper 的 OUT
@@ -16,7 +16,8 @@ import java.util.Set;
 public class BlogDetection1Reducer extends Reducer<LongWritable, LongWritable, LongWritable, Text> {
     private LongWritable outKey = new LongWritable();
     private Text outValue = new Text();
-    private Set<Long> set = new HashSet<Long>();
+
+    private List<Long> list = new ArrayList<>();
 
     /**
      * 重写reduce方法，每个key都会运行一次reduce方法
@@ -30,12 +31,13 @@ public class BlogDetection1Reducer extends Reducer<LongWritable, LongWritable, L
     protected void reduce(LongWritable key, Iterable<LongWritable> values, Reducer<LongWritable, LongWritable, LongWritable, Text>.Context context) throws IOException, InterruptedException {
         for (LongWritable value : values) {
             // KEY的关注对象的组合
-            set.add(value.get());
+            list.add(value.get());
         }
+        Collections.sort(list);
         outKey.set(key.get());
-        outValue.set(set.toString());
-        set.clear();
+        outValue.set(list.toString());
         // 写出输出数据到上下文
         context.write(outKey, outValue);
+        list.clear();
     }
 }
