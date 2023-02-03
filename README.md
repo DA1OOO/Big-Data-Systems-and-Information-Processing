@@ -596,9 +596,31 @@ Java code uses **21sec.**
 
 #### MapReduce 2
 
+​		Using MapReduce 1 output,  Calculate the **Cartesian** product of followers and convert the data into the following form, where K is the combination of two followers, V is their common followers
 
+![image-20230203164804675](README.assets/image-20230203164804675.png)
+
+`Mapper`:
+
+```java
+
+```
+
+`Reducer`:
+
+```java
+
+```
+
+`Driver`:
+
+```java
+
+```
 
 #### MapReduce 3
+
+
 
 ### 3. Task B
 
