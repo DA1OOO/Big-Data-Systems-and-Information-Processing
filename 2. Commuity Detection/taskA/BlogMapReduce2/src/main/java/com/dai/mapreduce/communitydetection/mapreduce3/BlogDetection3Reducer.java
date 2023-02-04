@@ -19,6 +19,8 @@ public class BlogDetection3Reducer extends Reducer<LongWritable, Text, LongWrita
 
     @Override
     protected void reduce(LongWritable key, Iterable<Text> values, Reducer<LongWritable, Text, LongWritable, Text>.Context context) throws IOException, InterruptedException {
+//        String blogIndex = String.valueOf(key);
+//        if (blogIndex.substring(blogIndex.length() - 4) != "2964") return;
         outKey.set(key.get());
         maxCommonBlogNums = 0;
         // 记录当前的A:B 中的B的大小

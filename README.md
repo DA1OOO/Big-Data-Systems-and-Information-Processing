@@ -690,6 +690,16 @@ public class BlogDetection1Driver {
 
 ```
 
+​		Using Maven package java program, get a .jar file.
+
+![image-20230204100630429](README.assets/image-20230204100630429.png)		
+
+​		Run MapReduce program in real Hadoop cluster.
+
+```shell
+hadoop jar BlogMapReduce-0.0.1-SNAPSHOT.jar com.dai.mapreduce.communitydetection.mapreduce1.BlogDetection1Driver /data/medium/medium_relation /data/output1
+```
+
 #### MapReduce 2
 
 ​		Using MapReduce 1 output,  Calculate the **Cartesian** product of followers and convert the data into the following form, where K is the combination of two followers, V is their common followers.
@@ -814,6 +824,12 @@ public class BlogDetection2Driver {
     }
 }
 
+```
+
+Run MapReduce program in real Hadoop cluster.
+
+```shell
+hadoop jar BlogMapReduce1-0.0.1-SNAPSHOT.jar com.dai.mapreduce.communitydetection.mapreduce2.BlogDetection2Driver /data/output1/part-r-00000 /data/output2
 ```
 
 #### MapReduce 3
@@ -943,6 +959,20 @@ public class BlogDetection3Driver {
 }
 
 ```
+
+​		Run MapReduce program in real Hadoop cluster.
+
+```shell
+hadoop jar BlogMapReduce2-0.0.1-SNAPSHOT.jar com.dai.mapreduce.communitydetection.mapreduce3.BlogDetection3Driver /data/output2/part-r-00000 /data/output3
+```
+
+​		Get 1KB tail data.
+
+```shell
+hadoop fs -tail /data/output3/part-r-00000
+```
+
+![image-20230204104952834](README.assets/image-20230204104952834.png)
 
 ### 3. Task B
 
