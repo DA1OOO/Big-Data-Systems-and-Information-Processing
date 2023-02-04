@@ -15,12 +15,14 @@ public class BlogDetection3Reducer extends Reducer<LongWritable, Text, LongWrita
 
     private int maxCommonBlogNums = 0;
 
+    private Long tempFlag = Long.valueOf(0);
+
     @Override
     protected void reduce(LongWritable key, Iterable<Text> values, Reducer<LongWritable, Text, LongWritable, Text>.Context context) throws IOException, InterruptedException {
         outKey.set(key.get());
         maxCommonBlogNums = 0;
         // 记录当前的A:B 中的B的大小
-        Long tempFlag = Long.valueOf(0);
+        tempFlag = Long.valueOf(0);
         for (Text value : values) {
             String[] words = value.toString().split("\\|");
             String[] commonBlog = words[1].split(", ");
@@ -32,6 +34,7 @@ public class BlogDetection3Reducer extends Reducer<LongWritable, Text, LongWrita
             if (commonBlog.length == maxCommonBlogNums) {
                 if (Long.parseLong(words[0]) > tempFlag) {
                     outValue.set(key + ":" + words[0] + "," + words[1] + "," + commonBlog.length);
+                    tempFlag = Long.valueOf(words[0]);
                 }
             }
         }
