@@ -8,10 +8,12 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 
 public class BlogDetection3Driver {
-    public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException, URISyntaxException {
         // 1. 获取job
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf);
@@ -31,11 +33,14 @@ public class BlogDetection3Driver {
         job.setOutputKeyClass(LongWritable.class);
         job.setOutputValueClass(Text.class);
 
+        // 读取文件进入缓存
+        job.addCacheFile(new URI("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2. Commuity Detection\\output0\\part-r-00000"));
+
         // 6. 设置输入输出路径
-//        FileInputFormat.setInputPaths(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2. Commuity Detection\\output1\\part-r-00000"));
-//        FileOutputFormat.setOutputPath(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2. Commuity Detection\\output2"));
-        FileInputFormat.setInputPaths(job, new Path(args[0]));
-        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+        FileInputFormat.setInputPaths(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2. Commuity Detection\\output1\\part-r-00000"));
+        FileOutputFormat.setOutputPath(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2. Commuity Detection\\output2"));
+//        FileInputFormat.setInputPaths(job, new Path(args[0]));
+//        FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
         // 7. 提交job
         boolean result = job.waitForCompletion(true);
