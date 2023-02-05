@@ -56,7 +56,7 @@ public class BlogDetection3Reducer extends Reducer<Text, Text, LongWritable, Tex
         ValueAndSimilarity valueAndSimilarity = new ValueAndSimilarity();
         for (Text value : values) {
             // D-5|[B,C,E] 分割为 [ D-5, [B,C,E] ]
-            String[] temp = value.toString().split("| ");
+            String[] temp = value.toString().split("\\|");
             String[] commonFollowees = temp[1].split(", ");
             // D-5 分割为 [D, 5]
             String[] temp2= temp[0].split("-");
@@ -68,7 +68,7 @@ public class BlogDetection3Reducer extends Reducer<Text, Text, LongWritable, Tex
             minheap.add(valueAndSimilarity);
         }
         for (ValueAndSimilarity elem : minheap) {
-            outValue.set(tempInfo[0] + ":" + elem.getValue() + "," + similarity);
+            outValue.set(tempInfo[0] + ":" + elem.getValue().toString() + "," + similarity);
             context.write(outKey, outValue);
         }
         minheap.clear();
