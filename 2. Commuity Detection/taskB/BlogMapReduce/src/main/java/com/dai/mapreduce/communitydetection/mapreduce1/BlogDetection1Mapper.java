@@ -5,13 +5,27 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 
-
+/**
+ * Task a: 寻找两篇博客的共同关注
+ * Input: _relation
+ * KEYIN: map阶段的输入的key的类型，默认为每次读取的偏移量 LongWritable
+ * VALUEIN: map阶段输入的value Text: 默认为读取一整行的内容
+ * KEYOUT: map阶段输出的key
+ * VALUEOUT: may阶段输出的value
+ */
 public class BlogDetection1Mapper extends Mapper<LongWritable, Text, LongWritable, LongWritable> {
     // 该map输出的key
     private LongWritable outKey = new LongWritable();
     // 该map输出的value
     private LongWritable outValue = new LongWritable();
-
+    /**
+     * map 阶段, map每行都会被调用一次
+     * @param key 输入时的key
+     * @param value 输入时的value
+     * @param context
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Override
     protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, LongWritable, LongWritable>.Context context) throws IOException, InterruptedException {
         // 获取一行

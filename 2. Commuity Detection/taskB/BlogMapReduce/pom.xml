@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dai</groupId>
-	<artifactId>BlogMapReduce1</artifactId>
+	<artifactId>BlogMapReduce</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>BlogMapReduce1</name>
+	<name>BlogMapReduce</name>
 	<description>Demo project for Blog MapReducce</description>
 
 	<properties>
