@@ -514,9 +514,9 @@ Java code uses **21sec.**
 
 
 
-## MapReduce ( Community Detection )
+## **MapReduce ( Community Detection )**
 
-### 1. Create **Maven** Project.
+### **1. Create Maven Project.**
 
 ​	Using `pom.xml` to manage dependencies:
 
@@ -568,7 +568,7 @@ Java code uses **21sec.**
 
 ```
 
-### 2. Task A
+### **2. Task A**
 
 > For EVERY blog, recommend the blog with the maximal number of common followees in the medium-sized dataset [2]. If multiple blogs share the same number, pick the one with the largest ID. Your output should consist of m lines, where m is the total number of blogs. Each line follows the format below: A:B, {C,E}, 2 where “A:B” is the blog pair, “{C,E}” is the set of their common followees (no special requirement for the elements’ order, i.e., {E,C} is acceptable), “2” is the count of common followees.
 
@@ -974,7 +974,7 @@ hadoop fs -tail /data/output3/part-r-00000
 
 ![image-20230204104952834](README.assets/image-20230204104952834.png)
 
-### 3. Task B
+### **3. Task B**
 
 >  Find the TOP K (K=3) most similar blogs of EVERY blog as well as their common followees for the medium-sized dataset [2]. If multiple blogs have the same similarity, randomly pick three of them. For each pair of blogs, output a line with the following format: 
 >
@@ -982,7 +982,7 @@ hadoop fs -tail /data/output3/part-r-00000
 >
 > ( where “simscore” is the similarity score between A and B. )
 
-### 4. Task C
+### **4. Task C**
 
 > In fact, each blog is annotated with a label indicating its community. In each dataset, a label file is provided, with the first column indicating the blog ID and the second column indicating the label value. For example, the small dataset has seven different labels (the value ranges from 0 to 6), which means that each blog is from one of the seven communities. For each community in the medium dataset, please figure out how many (unique) members act as the common followees of other blogs. (For example, suppose that A, B, C, D, E are labeled with community 0, 1, 2, 1, 2, respectively. Then, for community 0, one of its members (blog A) acts as the common followee of others (blog B and D). As for community 1, none of its members is the common followee of others.) Your reported results should be formatted like the following example:  
 >
@@ -992,13 +992,13 @@ hadoop fs -tail /data/output3/part-r-00000
 >
 > Community 2: 2
 
-### 5. Task D
+### **5. Task D**
 
 > Run part (a) for the medium dataset multiple times while modifying the number of mappers and reducers for your MapReduce job(s) each time. You need to examine and report the performance of your program for at least 4 different runs. Each run should use a different combination of the number of mappers and reducers. For each run, performance statistics to be reported should include: (i) the time consumed by the entire MapReduce job(s); (ii) the maximum, minimum and average time consumed by mapper and reducer tasks; (iii) tabulate the time consumption for each MapReduce job and its tasks. (One example is given in the following table.) Moreover, describe (and explain, if possible) your observations.
 >
 > ![image-20230203115223559](README.assets/image-20230203115223559.png)
 
-### 6. Task E
+### **6. Task E**
 
 > Find the TOP K (K=3) most similar blogs and the list of common followees for each blog in the large dataset in [3] using the format of Q1(b). (Hints: To reduce the memory consumption of your program, you may consider using the composite key design pattern and secondary sorting techniques as discussed in [7] and [8]).
 
