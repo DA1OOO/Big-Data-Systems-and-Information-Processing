@@ -32,8 +32,8 @@ public class BlogDetection1Driver {
         job.setOutputValueClass(Text.class);
 
         // 6. 设置输入输出路径
-        FileInputFormat.setInputPaths(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2. Commuity Detection\\input\\small\\small_relation"));
-        FileOutputFormat.setOutputPath(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2. Commuity Detection\\output"));
+        FileInputFormat.setInputPaths(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2.CommuityDetection\\input\\small\\small_relation"));
+        FileOutputFormat.setOutputPath(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2.CommuityDetection\\output1"));
 //        FileInputFormat.setInputPaths(job, new Path(args[0]));
 //        FileOutputFormat.setOutputPath(job, new Path(args[1]));
 

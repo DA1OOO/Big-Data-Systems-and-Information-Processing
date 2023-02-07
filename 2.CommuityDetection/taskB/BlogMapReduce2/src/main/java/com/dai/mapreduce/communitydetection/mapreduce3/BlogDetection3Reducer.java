@@ -20,7 +20,7 @@ public class BlogDetection3Reducer extends Reducer<Text, Text, LongWritable, Tex
         // 重写comparator
         @Override
         public int compare(ValueAndSimilarity o1, ValueAndSimilarity o2) {
-            return o1.getSimilarity() - o2.getSimilarity() > 0 ?  -1 : 1;
+            return o1.getSimilarity() - o2.getSimilarity() > 0 ?  1 : -1;
         }
     });
 
@@ -39,6 +39,16 @@ public class BlogDetection3Reducer extends Reducer<Text, Text, LongWritable, Tex
 
         public Double getSimilarity() {
             return similarity;
+        }
+
+        // 无参构造方法
+        public ValueAndSimilarity() {
+        }
+
+        //有参构造方法
+        public ValueAndSimilarity(Text value, Double similarity) {
+            this.value = value;
+            this.similarity = similarity;
         }
     }
 
@@ -60,15 +70,21 @@ public class BlogDetection3Reducer extends Reducer<Text, Text, LongWritable, Tex
             String[] commonFollowees = temp[1].split(", ");
             // D-5 分割为 [D, 5]
             String[] temp2= temp[0].split("-");
-            String tempStr = temp2[0] + "," + commonFollowees;
+            String tempStr = temp2[0] + "," + temp[1];
             otherFolloweesNum = Integer.parseInt(temp2[1]);
             // 计算相似度的公式
-            similarity = 1 / ((((double)followeesNum + (double)otherFolloweesNum) / (double)commonFollowees.length) - 1 );
-            valueAndSimilarity.set(new Text(tempStr), similarity);
-            minheap.add(valueAndSimilarity);
+            similarity = (double)commonFollowees.length / ((double)followeesNum + (double)otherFolloweesNum - (double)commonFollowees.length);
+            if (minheap.size() < 3) {
+                minheap.add(new ValueAndSimilarity(new Text(tempStr), similarity));
+            } else {
+                if (similarity > minheap.peek().similarity) {
+                    minheap.add(new ValueAndSimilarity(new Text(tempStr), similarity));
+                    minheap.poll();
+                }
+            }
         }
         for (ValueAndSimilarity elem : minheap) {
-            outValue.set(tempInfo[0] + ":" + elem.getValue().toString() + "," + similarity);
+            outValue.set(tempInfo[0] + ":" + elem.getValue().toString() + "," + elem.getSimilarity());
             context.write(outKey, outValue);
         }
         minheap.clear();
