@@ -1019,23 +1019,23 @@ hadoop fs -tail /data/output3/part-r-00000
 
 #### Comparison of different settings
 
-|    #Job    |        #MapReduce        |    Mapper num    |    Reducer  num    |    Max mapper time    |    Min mapper time    |    Avg mapper time    | Max reducer time  | Min reducer time  | Avg reducer time  |      Total time       |
-| :--------: | :----------------------: | :--------------: | :----------------: | :-------------------: | :-------------------: | :-------------------: | :---------------: | :---------------: | :---------------: | :-------------------: |
-|     1      |       MapReduce-1        |        1         |         1          |         7sec          |         7sec          |         7sec          |       1sec        |       1sec        |       1sec        |         16sec         |
-|     1      |       MapReduce-2        |        1         |         1          |         3mins         |         3mins         |         3mins         |       49sec       |       49sec       |       49sec       |      4mins,5sec       |
-|     1      |       MapReduce-3        |        9         |         1          |      1mins,16sec      |         14sec         |         49sec         |       57sec       |       57sec       |       57sec       |      2mins,19sec      |
-| **------** | **--------------------** | **------------** | **--------------** | **-----------------** | **-----------------** | **-----------------** | **-------------** | **-------------** | **-------------** | **-----------------** |
-|     2      |       MapReduce-1        |        1         |         2          |         6sec          |         6sec          |         6sec          |       1sec        |       1sec        |       1sec        |         16sec         |
-|     2      |       MapReduce-2        |        2         |         2          |      2mins,33sec      |      2mins,33sec      |      2mins,33sec      |       28sec       |       28sec       |       28sec       |      3mins,11sec      |
-|     2      |       MapReduce-3        |        18        |         2          |      1mins,15sec      |         9sec          |         1mins         |       50sec       |       50sec       |       50sec       |      2mins,29sec      |
-| **------** | **--------------------** | **------------** | **--------------** | **-----------------** | **-----------------** | **-----------------** | **-------------** | **-------------** | **-------------** | **-----------------** |
-|     3      |       MapReduce-1        |        1         |         4          |         6sec          |         6sec          |         6sec          |       2sec        |       0sec        |       1sec        |         17sec         |
-|     3      |       MapReduce-2        |        4         |         4          |      2mins,35sec      |      2mins,25sec      |      2mins,32sec      |       27sec       |       15sec       |       22sec       |      3mins,6sec       |
-|     3      |       MapReduce-3        |        20        |         4          |      1mins,12sec      |         21sec         |         52sec         |       55sec       |       51sec       |       53sec       |      2mins,23sec      |
-| **------** | **--------------------** | **------------** | **--------------** | **-----------------** | **-----------------** | **-----------------** | **-------------** | **-------------** | **-------------** | **-----------------** |
-|     4      |       MapReduce-1        |        1         |         4          |         5sec          |         5sec          |         5sec          |       1sec        |       0sec        |       1sec        |         17sec         |
-|     4      |       MapReduce-2        |        4         |         4          |      2mins,33sec      |      2mins,20sec      |      2mins,29sec      |       26sec       |       15sec       |       21sec       |      3mins,3sec       |
-|     4      |       MapReduce-3        |        12        |         4          |      1mins,59sec      |         14sec         |         59sec         |       26sec       |       25sec       |       26sec       |      2mins,33sec      |
+| #Job | #MapReduce  | Mapper num | Reducer  num | Max mapper time | Min mapper time | Avg mapper time | Max reducer time | Min reducer time | Avg reducer time | Total time  |
+| :--: | :---------: | :--------: | :----------: | :-------------: | :-------------: | :-------------: | :--------------: | :--------------: | :--------------: | :---------: |
+|  1   | MapReduce-1 |     1      |      1       |      7sec       |      7sec       |      7sec       |       1sec       |       1sec       |       1sec       |    16sec    |
+|  1   | MapReduce-2 |     1      |      1       |      3mins      |      3mins      |      3mins      |      49sec       |      49sec       |      49sec       | 4mins,5sec  |
+|  1   | MapReduce-3 |     9      |      1       |   1mins,16sec   |      14sec      |      49sec      |      57sec       |      57sec       |      57sec       | 2mins,19sec |
+|      |             |            |              |                 |                 |                 |                  |                  |                  |             |
+|  2   | MapReduce-1 |     1      |      2       |      6sec       |      6sec       |      6sec       |       1sec       |       1sec       |       1sec       |    16sec    |
+|  2   | MapReduce-2 |     2      |      2       |   2mins,33sec   |   2mins,33sec   |   2mins,33sec   |      28sec       |      28sec       |      28sec       | 3mins,11sec |
+|  2   | MapReduce-3 |     18     |      2       |   1mins,15sec   |      9sec       |      1mins      |      50sec       |      50sec       |      50sec       | 2mins,29sec |
+|      |             |            |              |                 |                 |                 |                  |                  |                  |             |
+|  3   | MapReduce-1 |     1      |      4       |      6sec       |      6sec       |      6sec       |       2sec       |       0sec       |       1sec       |    17sec    |
+|  3   | MapReduce-2 |     4      |      4       |   2mins,35sec   |   2mins,25sec   |   2mins,32sec   |      27sec       |      15sec       |      22sec       | 3mins,6sec  |
+|  3   | MapReduce-3 |     20     |      4       |   1mins,12sec   |      21sec      |      52sec      |      55sec       |      51sec       |      53sec       | 2mins,23sec |
+|      |             |            |              |                 |                 |                 |                  |                  |                  |             |
+|  4   | MapReduce-1 |     1      |      4       |      5sec       |      5sec       |      5sec       |       1sec       |       0sec       |       1sec       |    17sec    |
+|  4   | MapReduce-2 |     4      |      4       |   2mins,33sec   |   2mins,20sec   |   2mins,29sec   |      26sec       |      15sec       |      21sec       | 3mins,3sec  |
+|  4   | MapReduce-3 |     12     |      4       |   1mins,59sec   |      14sec      |      59sec      |      26sec       |      25sec       |      26sec       | 2mins,33sec |
 
 ##### Job 1
 
