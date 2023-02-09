@@ -570,7 +570,11 @@ Java code uses **21sec.**
 
 ### **2. Task A**
 
-> For EVERY blog, recommend the blog with the maximal number of common followees in the medium-sized dataset [2]. If multiple blogs share the same number, pick the one with the largest ID. Your output should consist of m lines, where m is the total number of blogs. Each line follows the format below: A:B, {C,E}, 2 where “A:B” is the blog pair, “{C,E}” is the set of their common followees (no special requirement for the elements’ order, i.e., {E,C} is acceptable), “2” is the count of common followees.
+> For EVERY blog, recommend the blog with the maximal number of common followees in the medium-sized dataset [2]. If multiple blogs share the same number, pick the one with the largest ID. Your output should consist of m lines, where m is the total number of blogs. Each line follows the format below: 
+>
+> ​																													**A:B, {C,E}, 2** 
+>
+> where “A:B” is the blog pair, “{C,E}” is the set of their common followees (no special requirement for the elements’ order, i.e., {E,C} is acceptable), “2” is the count of common followees.
 
 #### MapReduce 1
 
@@ -581,7 +585,7 @@ Java code uses **21sec.**
 `Mapper`:
 
 ```java
-package com.dai.mapreduce.communitydetection.taskA.mapreduce1;
+package com.dai.mapreduce.communitydetection.mapreduce1;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -599,15 +603,14 @@ public class BlogDetection1Mapper extends Mapper<LongWritable, Text, LongWritabl
         String line = value.toString();
         // 用空格将一行中的两个数据进行切割 [A，B] 表示B follow A
         String[] words = line.split(" ");
-        // 关注者作为key
+        // 被关注者作为key
         outKey.set(Long.parseLong(words[0]));
-        // 被关注者作为value
+        // 关注者作为value
         outValue.set(Long.parseLong(words[1]));
         // 将数据分割为 K-V 键值对
         context.write(outKey, outValue);
     }
 }
-
 ```
 
 `Reducer`:
@@ -829,7 +832,7 @@ public class BlogDetection2Driver {
 Run MapReduce program in real Hadoop cluster.
 
 ```shell
-hadoop jar BlogMapReduce1-0.0.1-SNAPSHOT.jar com.dai.mapreduce.communitydetection.mapreduce2.BlogDetection2Driver /data/output1/part-r-00000 /data/output2
+hadoop jar BlogMapReduce1-0.0.1-SNAPSHOT.jar com.dai.mapreduce.communitydetection.mapreduce2.BlogDetection2Driver /data/output1 /data/output2
 ```
 
 #### MapReduce 3
@@ -963,7 +966,7 @@ public class BlogDetection3Driver {
 ​		Run MapReduce program in real Hadoop cluster.
 
 ```shell
-hadoop jar BlogMapReduce2-0.0.1-SNAPSHOT.jar com.dai.mapreduce.communitydetection.mapreduce3.BlogDetection3Driver /data/output2/part-r-00000 /data/output3
+hadoop jar BlogMapReduce2-0.0.1-SNAPSHOT.jar com.dai.mapreduce.communitydetection.mapreduce3.BlogDetection3Driver /data/output2 /data/output3
 ```
 
 ​		Get 1KB tail data.
@@ -978,29 +981,98 @@ hadoop fs -tail /data/output3/part-r-00000
 
 >  Find the TOP K (K=3) most similar blogs of EVERY blog as well as their common followees for the medium-sized dataset [2]. If multiple blogs have the same similarity, randomly pick three of them. For each pair of blogs, output a line with the following format: 
 >
-> ​															A:B, {C,E}, simscore ········································(F1) 
+> ​																				**A:B, {C,E}, simscore ········································(F1)** 
 >
 > ( where “simscore” is the similarity score between A and B. )
+
+
 
 ### **4. Task C**
 
 > In fact, each blog is annotated with a label indicating its community. In each dataset, a label file is provided, with the first column indicating the blog ID and the second column indicating the label value. For example, the small dataset has seven different labels (the value ranges from 0 to 6), which means that each blog is from one of the seven communities. For each community in the medium dataset, please figure out how many (unique) members act as the common followees of other blogs. (For example, suppose that A, B, C, D, E are labeled with community 0, 1, 2, 1, 2, respectively. Then, for community 0, one of its members (blog A) acts as the common followee of others (blog B and D). As for community 1, none of its members is the common followee of others.) Your reported results should be formatted like the following example:  
 >
-> Community 0: 1 
+> ​																													**Community 0: 1** 
 >
-> Community 1: 0 
+> ​																													**Community 1: 0** 
 >
-> Community 2: 2
+> ​																													**Community 2: 2**
+
+
 
 ### **5. Task D**
 
-> Run part (a) for the medium dataset multiple times while modifying the number of mappers and reducers for your MapReduce job(s) each time. You need to examine and report the performance of your program for at least 4 different runs. Each run should use a different combination of the number of mappers and reducers. For each run, performance statistics to be reported should include: (i) the time consumed by the entire MapReduce job(s); (ii) the maximum, minimum and average time consumed by mapper and reducer tasks; (iii) tabulate the time consumption for each MapReduce job and its tasks. (One example is given in the following table.) Moreover, describe (and explain, if possible) your observations.
+> Run part (a) for the medium dataset multiple times while modifying the number of mappers and reducers for your MapReduce job(s) each time. You need to examine and report the performance of your program for at least 4 different runs. Each run should use a different combination of the number of mappers and reducers. For each run, performance statistics to be reported should include: 
 >
-> ![image-20230203115223559](README.assets/image-20230203115223559.png)
+> (i) the time consumed by the entire MapReduce job(s);
+>
+> (ii) the maximum, minimum and average time consumed by mapper and reducer tasks; 
+>
+> (iii) tabulate the time consumption for each MapReduce job and its tasks. 
+
+#### Modify the number of mappers
+
+
+
+#### Modify the number of reducers
+
+
+
+#### Comparison of different settings
+
+|    #Job    |        #MapReduce        |    Mapper num    |    Reducer  num    |    Max mapper time    |    Min mapper time    |    Avg mapper time    | Max reducer time  | Min reducer time  | Avg reducer time  |      Total time       |
+| :--------: | :----------------------: | :--------------: | :----------------: | :-------------------: | :-------------------: | :-------------------: | :---------------: | :---------------: | :---------------: | :-------------------: |
+|     1      |       MapReduce-1        |        1         |         1          |         7sec          |         7sec          |         7sec          |       1sec        |       1sec        |       1sec        |         16sec         |
+|     1      |       MapReduce-2        |        1         |         1          |         3mins         |         3mins         |         3mins         |       49sec       |       49sec       |       49sec       |      4mins,5sec       |
+|     1      |       MapReduce-3        |        9         |         1          |      1mins,16sec      |         14sec         |         49sec         |       57sec       |       57sec       |       57sec       |      2mins,19sec      |
+| **------** | **--------------------** | **------------** | **--------------** | **-----------------** | **-----------------** | **-----------------** | **-------------** | **-------------** | **-------------** | **-----------------** |
+|     2      |       MapReduce-1        |        1         |         2          |         6sec          |         6sec          |         6sec          |       1sec        |       1sec        |       1sec        |         16sec         |
+|     2      |       MapReduce-2        |        2         |         2          |      2mins,33sec      |      2mins,33sec      |      2mins,33sec      |       28sec       |       28sec       |       28sec       |      3mins,11sec      |
+|     2      |       MapReduce-3        |        18        |         2          |      1mins,15sec      |         9sec          |         1mins         |       50sec       |       50sec       |       50sec       |      2mins,29sec      |
+| **------** | **--------------------** | **------------** | **--------------** | **-----------------** | **-----------------** | **-----------------** | **-------------** | **-------------** | **-------------** | **-----------------** |
+|     3      |       MapReduce-1        |        1         |         4          |         6sec          |         6sec          |         6sec          |       2sec        |       0sec        |       1sec        |         17sec         |
+|     3      |       MapReduce-2        |        4         |         4          |      2mins,35sec      |      2mins,25sec      |      2mins,32sec      |       27sec       |       15sec       |       22sec       |      3mins,6sec       |
+|     3      |       MapReduce-3        |        20        |         4          |      1mins,12sec      |         21sec         |         52sec         |       55sec       |       51sec       |       53sec       |      2mins,23sec      |
+| **------** | **--------------------** | **------------** | **--------------** | **-----------------** | **-----------------** | **-----------------** | **-------------** | **-------------** | **-------------** | **-----------------** |
+|     4      |       MapReduce-1        |        1         |         4          |         5sec          |         5sec          |         5sec          |       1sec        |       0sec        |       1sec        |         17sec         |
+|     4      |       MapReduce-2        |        4         |         4          |      2mins,33sec      |      2mins,20sec      |      2mins,29sec      |       26sec       |       15sec       |       21sec       |      3mins,3sec       |
+|     4      |       MapReduce-3        |        12        |         4          |      1mins,59sec      |         14sec         |         59sec         |       26sec       |       25sec       |       26sec       |      2mins,33sec      |
+
+##### Job 1
+
+​		Split size is default 128MB.
+
+![image-20230208123845606](README.assets/image-20230208123845606.png)
+
+![image-20230208123855252](README.assets/image-20230208123855252.png)
+
+##### Job 2
+
+​		Set split max size to 64MB, and set reduce task number to 2.
+
+```java
+conf.set(FileInputFormat.SPLIT_MAXSIZE,"67108864"); // 切片大小设置为64MB
+job.setNumReduceTasks(2);
+```
+
+![image-20230209214822096](README.assets/image-20230209214822096.png)
+
+##### Job 3
+
+​		Set reduce task number to 4.
+
+![image-20230209223354775](README.assets/image-20230209223354775.png)
+
+##### Job 4
+
+​		Set split max size to 256MB.
+
+![image-20230210000510095](README.assets/image-20230210000510095.png)
+
+
 
 ### **6. Task E**
 
-> Find the TOP K (K=3) most similar blogs and the list of common followees for each blog in the large dataset in [3] using the format of Q1(b). (Hints: To reduce the memory consumption of your program, you may consider using the composite key design pattern and secondary sorting techniques as discussed in [7] and [8]).
+> Find the TOP K (K=3) most similar blogs and the list of common followees for each blog in the large dataset in [3] using the format of Q1(b). 
 
 ## **Reference**
 
@@ -1009,3 +1081,6 @@ hadoop fs -tail /data/output3/part-r-00000
 2.  Python wordcount:https://www.michael-noll.com/tutorials/writing-an-hadoop-mapreduce-program-in-python/
 2.  Java wordcount:https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Example:_WordCount_v1.0
 2.  Community Detection MapReduce:https://blog.csdn.net/qq_45347768/article/details/127498788
+2.  Set map tasks number: http://www.360doc.com/document/14/0712/10/6590333_393836370.shtml
+2.  Set split size: https://blog.csdn.net/weixin_47350757/article/details/114401953
+
