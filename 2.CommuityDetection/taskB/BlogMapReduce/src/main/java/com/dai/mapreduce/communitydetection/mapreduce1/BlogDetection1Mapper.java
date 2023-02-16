@@ -13,11 +13,11 @@ import java.io.IOException;
  * KEYOUT: map阶段输出的key
  * VALUEOUT: may阶段输出的value
  */
-public class BlogDetection1Mapper extends Mapper<LongWritable, Text, LongWritable, LongWritable> {
+public class BlogDetection1Mapper extends Mapper<LongWritable, Text, Text, Text> {
     // 该map输出的key
-    private LongWritable outKey = new LongWritable();
+    private Text outKey = new Text();
     // 该map输出的value
-    private LongWritable outValue = new LongWritable();
+    private Text outValue = new Text();
     /**
      * map 阶段, map每行都会被调用一次
      * @param key 输入时的key
@@ -27,15 +27,15 @@ public class BlogDetection1Mapper extends Mapper<LongWritable, Text, LongWritabl
      * @throws InterruptedException
      */
     @Override
-    protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, LongWritable, LongWritable>.Context context) throws IOException, InterruptedException {
+    protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, Text>.Context context) throws IOException, InterruptedException {
         // 获取一行
         String line = value.toString();
         // 用空格将一行中的两个数据进行切割 [A，B] 表示B follow A
         String[] words = line.split(" ");
         // 被关注者作为key
-        outKey.set(Long.parseLong(words[0]));
+        outKey.set(words[0]);
         // 关注者作为value
-        outValue.set(Long.parseLong(words[1]));
+        outValue.set(words[1]);
         // 将数据分割为 K-V 键值对
         context.write(outKey, outValue);
     }

@@ -13,11 +13,11 @@ import java.util.*;
  * IN: 每对图关系 A->B
  * output 格式:    K - A : V - B,C,D (A : A的粉丝)
  */
-public class BlogDetection1Reducer extends Reducer<LongWritable, LongWritable, LongWritable, Text> {
-    private LongWritable outKey = new LongWritable();
+public class BlogDetection1Reducer extends Reducer<Text, Text, Text, Text> {
+    private Text outKey = new Text();
     private Text outValue = new Text();
 
-    private List<Long> list = new ArrayList<>();
+    private List<String> list = new ArrayList<>();
 
     /**
      * 重写reduce方法，每个key都会运行一次reduce方法
@@ -28,13 +28,13 @@ public class BlogDetection1Reducer extends Reducer<LongWritable, LongWritable, L
      * @throws InterruptedException
      */
     @Override
-    protected void reduce(LongWritable key, Iterable<LongWritable> values, Reducer<LongWritable, LongWritable, LongWritable, Text>.Context context) throws IOException, InterruptedException {
-        for (LongWritable value : values) {
+    protected void reduce(Text key, Iterable<Text> values, Reducer<Text, Text, Text, Text>.Context context) throws IOException, InterruptedException {
+        for (Text value : values) {
             // KEY的关注对象的组合
-            list.add(value.get());
+            list.add(value.toString());
         }
         Collections.sort(list);
-        outKey.set(key.get());
+        outKey.set(key);
         outValue.set(list.toString());
         // 写出输出数据到上下文
         context.write(outKey, outValue);

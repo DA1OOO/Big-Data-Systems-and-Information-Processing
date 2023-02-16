@@ -34,13 +34,14 @@ public class BlogDetection3Driver {
         job.setOutputValueClass(Text.class);
 
         // 读取文件进入缓存
-        job.addCacheFile(new URI("file:///C://Users//Administrator//Desktop//Big-Data-Systems-and-Information-Processing//2.CommuityDetection//output0//part-r-00000"));
+//        job.addCacheFile(new URI("file:///C://Users//Administrator//Desktop//Big-Data-Systems-and-Information-Processing//2.CommuityDetection//output0//part-r-00000"));
+        job.addCacheFile(new URI(args[2]));
 
         // 6. 设置输入输出路径
-        FileInputFormat.setInputPaths(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2.CommuityDetection\\output2\\part-r-00000"));
-        FileOutputFormat.setOutputPath(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2.CommuityDetection\\output3"));
-//        FileInputFormat.setInputPaths(job, new Path(args[0]));
-//        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+//        FileInputFormat.setInputPaths(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2.CommuityDetection\\output2\\part-r-00000"));
+//        FileOutputFormat.setOutputPath(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2.CommuityDetection\\output3"));
+        FileInputFormat.setInputPaths(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
         // 7. 提交job
         boolean result = job.waitForCompletion(true);

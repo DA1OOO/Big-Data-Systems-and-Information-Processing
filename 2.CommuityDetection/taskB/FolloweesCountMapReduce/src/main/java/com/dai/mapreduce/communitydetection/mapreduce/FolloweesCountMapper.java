@@ -8,18 +8,18 @@ import java.io.IOException;
 
 /**
  */
-public class FolloweesCountMapper extends Mapper<LongWritable, Text, LongWritable, IntWritable> {
+public class FolloweesCountMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
     // 该map输出的key
-    private LongWritable outKey = new LongWritable();
+    private Text outKey = new Text();
     // 该map输出的value
     private IntWritable outValue = new IntWritable(1);
 
     @Override
-    protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, LongWritable, IntWritable>.Context context) throws IOException, InterruptedException {
+    protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, IntWritable>.Context context) throws IOException, InterruptedException {
         // 获取一行
         String line = value.toString();
         String[] words = line.split(" ");
-        outKey.set(Long.parseLong(words[1]));
+        outKey.set(words[1]);
         context.write(outKey, outValue);
     }
 }

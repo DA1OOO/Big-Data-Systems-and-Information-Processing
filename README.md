@@ -576,6 +576,8 @@ Java code uses **21sec.**
 >
 > where “A:B” is the blog pair, “{C,E}” is the set of their common followees (no special requirement for the elements’ order, i.e., {E,C} is acceptable), “2” is the count of common followees.
 
+
+
 #### MapReduce 1
 
 ​		Merge original data, get new K-V. **K is followee, and V contains K's followers.**
@@ -984,6 +986,390 @@ hadoop fs -tail /data/output3/part-r-00000
 > ​																				**A:B, {C,E}, simscore ········································(F1)** 
 >
 > ( where “simscore” is the similarity score between A and B. )
+
+![image-20230210093427832](README.assets/image-20230210093427832.png)
+
+
+
+#### FolloweesCountMapReduce
+
+​		Used to count a blog's number of followees. Out format: K - A (a blog)  | V - 10 (number of A's followees).
+
+`Mapper`:
+
+```java
+package com.dai.mapreduce.communitydetection.mapreduce;
+
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+import java.io.IOException;
+
+public class FolloweesCountMapper extends Mapper<LongWritable, Text, LongWritable, IntWritable> {
+    // 该map输出的key
+    private LongWritable outKey = new LongWritable();
+    // 该map输出的value
+    private IntWritable outValue = new IntWritable(1);
+
+    @Override
+    protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, LongWritable, IntWritable>.Context context) throws IOException, InterruptedException {
+        // 获取一行
+        String line = value.toString();
+        String[] words = line.split(" ");
+        outKey.set(Long.parseLong(words[1]));
+        context.write(outKey, outValue);
+    }
+}
+```
+
+`Reducer`:
+
+```java
+package com.dai.mapreduce.communitydetection.mapreduce1;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.*;
+
+public class BlogDetection1Reducer extends Reducer<LongWritable, LongWritable, LongWritable, Text> {
+    private LongWritable outKey = new LongWritable();
+    
+    private Text outValue = new Text();
+
+    private List<Long> list = new ArrayList<>();
+
+    @Override
+    protected void reduce(LongWritable key, Iterable<LongWritable> values, Reducer<LongWritable, LongWritable, LongWritable, Text>.Context context) throws IOException, InterruptedException {
+        for (LongWritable value : values) {
+            // KEY的关注对象的组合
+            list.add(value.get());
+        }
+        Collections.sort(list);
+        outKey.set(key.get());
+        outValue.set(list.toString());
+        // 写出输出数据到上下文
+        context.write(outKey, outValue);
+        list.clear();
+    }
+}
+```
+
+`Driver`:
+
+```java
+package com.dai.mapreduce.communitydetection.mapreduce1;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import java.io.IOException;
+
+public class BlogDetection1Driver {
+    public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
+        // 1. 获取job
+        Configuration conf = new Configuration();
+        Job job = Job.getInstance(conf);
+
+        // 2. 设置jar包路径
+        job.setJarByClass(BlogDetection1Driver.class);
+
+        // 3. 关联 mapper 和 reducer
+        job.setMapperClass(BlogDetection1Mapper.class);
+        job.setReducerClass(BlogDetection1Reducer.class);
+
+        // 4. 设置 mapper 输出的KV类型
+        job.setMapOutputKeyClass(LongWritable.class);
+        job.setMapOutputValueClass(LongWritable.class);
+
+        // 5. 设置最终输出的KV类型
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(Text.class);
+
+        // 6. 设置输入输出路径
+        FileInputFormat.setInputPaths(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
+        // 7. 提交job
+        boolean result = job.waitForCompletion(true);
+        System.exit(result ? 0 : 1);
+    }
+}
+```
+
+​		Run MapReduce program.
+
+```shell
+hadoop jar FolloweesCount-0.0.1-SNAPSHOT.jar com.dai.mapreduce.communitydetection.mapreduce.FolloweesCountDriver /data/large/large_relation /data/followees_count
+```
+
+
+
+#### MapReduce1
+
+​		Key - A (followee) |  Value - B (follower)    -----------------------------> Key - A (followee) | Value - B,C,D (followers)
+
+`Mapper`:
+
+```Java
+package com.dai.mapreduce.communitydetection.mapreduce1;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+import java.io.IOException;
+
+public class BlogDetection1Mapper extends Mapper<LongWritable, Text, LongWritable, LongWritable> {
+    // 该map输出的key
+    private LongWritable outKey = new LongWritable();
+    // 该map输出的value
+    private LongWritable outValue = new LongWritable();
+    
+    @Override
+    protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, LongWritable, LongWritable>.Context context) throws IOException, InterruptedException {
+        // 获取一行
+        String line = value.toString();
+        // 用空格将一行中的两个数据进行切割 [A，B] 表示B follow A
+        String[] words = line.split(" ");
+        // 被关注者作为key
+        outKey.set(Long.parseLong(words[0]));
+        // 关注者作为value
+        outValue.set(Long.parseLong(words[1]));
+        // 将数据分割为 K-V 键值对
+        context.write(outKey, outValue);
+    }
+}
+
+```
+
+`Reducer`:
+
+```java
+package com.dai.mapreduce.communitydetection.mapreduce1;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.*;
+
+public class BlogDetection1Reducer extends Reducer<LongWritable, LongWritable, LongWritable, Text> {
+    private LongWritable outKey = new LongWritable();
+    
+    private Text outValue = new Text();
+    
+    private List<Long> list = new ArrayList<>();
+
+    @Override
+    protected void reduce(LongWritable key, Iterable<LongWritable> values, Reducer<LongWritable, LongWritable, LongWritable, Text>.Context context) throws IOException, InterruptedException {
+        for (LongWritable value : values) {
+            // KEY的关注对象的组合
+            list.add(value.get());
+        }
+        Collections.sort(list);
+        outKey.set(key.get());
+        outValue.set(list.toString());
+        // 写出输出数据到上下文
+        context.write(outKey, outValue);
+        list.clear();
+    }
+}
+```
+
+`Driver`:
+
+```java
+package com.dai.mapreduce.communitydetection.mapreduce1;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import java.io.IOException;
+
+public class BlogDetection1Driver {
+    public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
+        // 1. 获取job
+        Configuration conf = new Configuration();
+        Job job = Job.getInstance(conf);
+
+        // 2. 设置jar包路径
+        job.setJarByClass(BlogDetection1Driver.class);
+
+        // 3. 关联 mapper 和 reducer
+        job.setMapperClass(BlogDetection1Mapper.class);
+        job.setReducerClass(BlogDetection1Reducer.class);
+
+        // 4. 设置 mapper 输出的KV类型
+        job.setMapOutputKeyClass(LongWritable.class);
+        job.setMapOutputValueClass(LongWritable.class);
+
+        // 5. 设置最终输出的KV类型
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(Text.class);
+
+        // 6. 设置输入输出路径
+        FileInputFormat.setInputPaths(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
+        // 7. 提交job
+        boolean result = job.waitForCompletion(true);
+        System.exit(result ? 0 : 1);
+    }
+}
+
+```
+
+​		Running MapReduce2 program.
+
+```shell
+hadoop jar BlogMapReduce-0.0.1-SNAPSHOT.jar com.dai.mapreduce.communitydetection.mapreduce1.BlogDetection1Driver /data/large/large_relation /data/output1
+```
+
+#### MapReduce2
+
+​		Key - A (followee) | Value - B,C,D (followers) ------------------------------> Key - B | Value - B,C {A} (B,C common follow A)
+
+`Mapper`:
+
+```java
+package com.dai.mapreduce.communitydetection.mapreduce2;
+
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+import java.io.IOException;
+
+public class BlogDetection2Mapper extends Mapper<LongWritable, Text, Text, Text> {
+    // 该map输出的key
+    private Text outKey = new Text();
+    // 该map输出的value
+    private Text outValue = new Text();
+
+    @Override
+    protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, Text>.Context context) throws IOException, InterruptedException {
+        // 获取一行
+        // 2	[49, 54, 55, 74, 89]
+        String line = value.toString();
+        String[] words = line.split("\t");
+        // outValue 由 关注对象组成
+        outValue.set(words[0]);
+        // 将 [49, 54, 55, 74, 89] 处理到数组中
+        String[] followees = words[1].split(", ");
+        followees[0] = followees[0].substring(1);
+        followees[followees.length - 1] = followees[followees.length - 1].substring(0, followees[followees.length - 1].length() - 1);
+        // 求出 [49, 54, 55, 74, 89] 的笛卡尔积
+        for (int i = 0; i < followees.length; ++i) {
+            for (int j = i + 1; j < followees.length; ++j) {
+                outKey.set(followees[i] + "," + followees[j]);
+                context.write(outKey, outValue);
+            }
+        }
+    }
+}
+```
+
+`Reducer`:
+
+```java
+package com.dai.mapreduce.communitydetection.mapreduce;
+
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+import java.io.IOException;
+
+public class FolloweesCountReducer extends Reducer<LongWritable, IntWritable, LongWritable, IntWritable> {
+    private LongWritable outKey = new LongWritable();
+
+    private IntWritable outValue = new IntWritable();
+
+    private int sum = 0;
+
+    @Override
+    protected void reduce(LongWritable key, Iterable<IntWritable> values, Reducer<LongWritable, IntWritable, LongWritable, IntWritable>.Context context) throws IOException, InterruptedException {
+        sum = 0;
+        for (IntWritable value : values) {
+            sum += 1;
+        }
+        outKey.set(key.get());
+        outValue.set(sum);
+        context.write(outKey, outValue);
+    }
+}
+```
+
+`Driver`:
+
+```java
+package com.dai.mapreduce.communitydetection.mapreduce1;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import java.io.IOException;
+
+public class BlogDetection1Driver {
+    public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
+        // 1. 获取job
+        Configuration conf = new Configuration();
+        Job job = Job.getInstance(conf);
+
+        // 2. 设置jar包路径
+        job.setJarByClass(BlogDetection1Driver.class);
+
+        // 3. 关联 mapper 和 reducer
+        job.setMapperClass(BlogDetection1Mapper.class);
+        job.setReducerClass(BlogDetection1Reducer.class);
+
+        // 4. 设置 mapper 输出的KV类型
+        job.setMapOutputKeyClass(LongWritable.class);
+        job.setMapOutputValueClass(LongWritable.class);
+
+        // 5. 设置最终输出的KV类型
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(Text.class);
+
+        // 6. 设置输入输出路径
+        FileInputFormat.setInputPaths(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
+        // 7. 提交job
+        boolean result = job.waitForCompletion(true);
+        System.exit(result ? 0 : 1);
+    }
+}
+```
+
+​		Running MapReduce2 program.
+
+```shell
+hadoop jar BlogMapReduce1-0.0.1-SNAPSHOT.jar com.dai.mapreduce.communitydetection.mapreduce2.BlogDetection2Driver /data/output1 /data/output2
+```
+
+
+
+
+
+#### MapReduce3
+
+
 
 
 
