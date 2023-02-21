@@ -22,9 +22,10 @@ public class BlogDetection3Reducer extends Reducer<LongWritable, Text, LongWrita
 //        String blogIndex = String.valueOf(key);
 //        if (blogIndex.substring(blogIndex.length() - 4) != "2964") return;
         outKey.set(key.get());
+        if (!String.valueOf(key.get()).endsWith("2964")) return;
         maxCommonBlogNums = 0;
         // 记录当前的A:B 中的B的大小
-        tempFlag = Long.valueOf(0);
+        tempFlag = 0L;
         for (Text value : values) {
             String[] words = value.toString().split("\\|");
             String[] commonBlog = words[1].split(", ");

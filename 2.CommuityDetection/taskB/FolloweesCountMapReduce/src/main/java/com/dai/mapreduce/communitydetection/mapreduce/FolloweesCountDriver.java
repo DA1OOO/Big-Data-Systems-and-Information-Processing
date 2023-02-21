@@ -33,10 +33,10 @@ public class FolloweesCountDriver {
         job.setOutputValueClass(IntWritable.class);
 
         // 6. 设置输入输出路径
-//        FileInputFormat.setInputPaths(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2.CommuityDetection\\input\\small\\small_relation"));
-//        FileOutputFormat.setOutputPath(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2.CommuityDetection\\output0"));
-        FileInputFormat.setInputPaths(job, new Path(args[0]));
-        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+        FileInputFormat.setInputPaths(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2.CommuityDetection\\input\\medium\\medium_relation"));
+        FileOutputFormat.setOutputPath(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2.CommuityDetection\\output0"));
+//        FileInputFormat.setInputPaths(job, new Path(args[0]));
+//        FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
         // 7. 提交job
         boolean result = job.waitForCompletion(true);

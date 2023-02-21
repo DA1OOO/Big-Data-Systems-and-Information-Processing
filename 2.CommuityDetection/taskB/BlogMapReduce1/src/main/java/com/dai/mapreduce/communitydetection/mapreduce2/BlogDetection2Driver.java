@@ -48,10 +48,10 @@ public class BlogDetection2Driver {
         job.setOutputValueClass(Text.class);
 
         // 6. 设置输入输出路径
-//      FileInputFormat.setInputPaths(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2.CommuityDetection\\output1\\part-r-00000"));
-//      FileOutputFormat.setOutputPath(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2.CommuityDetection\\output2"));
-        FileInputFormat.setInputPaths(job, new Path(args[0]));
-        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+      FileInputFormat.setInputPaths(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2.CommuityDetection\\output1"));
+      FileOutputFormat.setOutputPath(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2.CommuityDetection\\output2"));
+//        FileInputFormat.setInputPaths(job, new Path(args[0]));
+//        FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
         // 7. 提交job
         boolean result = job.waitForCompletion(true);

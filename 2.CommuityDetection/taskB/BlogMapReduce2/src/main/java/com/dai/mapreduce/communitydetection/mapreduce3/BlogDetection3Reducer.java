@@ -54,10 +54,9 @@ public class BlogDetection3Reducer extends Reducer<Text, Text, LongWritable, Tex
 
     @Override
     protected void reduce(Text key, Iterable<Text> values, Reducer<Text, Text, LongWritable, Text>.Context context) throws IOException, InterruptedException {
-//        String blogIndex = String.valueOf(key);
-//        if (blogIndex.substring(blogIndex.length() - 4) != "2964") return;
         // A-4 分割为 [A , 4]
         String[] tempInfo = key.toString().split("-");
+        if (!tempInfo[0].endsWith("2964")) return;
         outKey.set(Long.parseLong(tempInfo[0]));
         // 记录key关注者的个数
         int followeesNum = Integer.parseInt(tempInfo[1]);

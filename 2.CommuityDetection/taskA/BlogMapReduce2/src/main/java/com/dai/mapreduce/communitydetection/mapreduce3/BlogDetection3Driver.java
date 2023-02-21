@@ -36,8 +36,6 @@ public class BlogDetection3Driver {
         job.setOutputKeyClass(LongWritable.class);
         job.setOutputValueClass(Text.class);
 
-        job.setNumReduceTasks(4);
-
         // 6. 设置输入输出路径
 //        FileInputFormat.setInputPaths(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2. Commuity Detection\\output1\\part-r-00000"));
 //        FileOutputFormat.setOutputPath(job, new Path("C:\\Users\\Administrator\\Desktop\\Big-Data-Systems-and-Information-Processing\\2. Commuity Detection\\output2"));
