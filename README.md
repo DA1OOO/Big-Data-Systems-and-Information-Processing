@@ -2009,6 +2009,64 @@ After 10hrs running, because of lack of disk memory, the task was killed.
 
 ![image-20230221150536865](README.assets/image-20230221150536865.png)
 
+## Pig，Hive，Spark ##
+
+### Basic Operation of Pig
+
+#### a. Pig Installation
+
+​	Download Pig from Apache.
+
+​	Unpack it.
+
+```shell
+tar -xvf pig-0.17.0.tar.gz
+```
+
+​	Set environmental variables.
+
+```shell
+export PIG_HOME=/home/dai_hk/opt/module/pig-0.17.0
+PATH=$PATH:$PIG_HOME/bin
+```
+
+  Use `-version` to check if Pig is installed.
+
+```shell
+pig -version
+```
+
+  Installation succeed.
+
+![image-20230222181326847](README.assets/image-20230222181326847.png)
+
+#### b. Upload and join two datesets in HDFS.
+
+​	Before joint.
+
+![image-20230222184816482](README.assets/image-20230222184816482.png)
+
+​	Use hadoop command to join A to B.
+
+```shell
+hadoop fs -appendToFile /home/dai_hk/opt/data/googlebooks-eng-all-1gram-20120701-b/googlebooks-eng-all-1gram-20120701-b /data/googlebooks-eng-all-1gram-20120701-a/googlebooks-eng-all-1gram-20120701-a
+```
+
+After joint.
+
+![image-20230222185052849](README.assets/image-20230222185052849.png)
+
+#### c. Compute avg of occurrences per year.
+
+```pig
+counts = LOAD '/data/googlebooks-eng-all-1gram-20120701-a/googlebooks-eng-all-1gram-20120701-a' as (bigram:chararray, year:chararray, match_count:double, volume_count:int);
+grouped_counts = GROUP counts BY bigram;
+result = FOREACH grouped_counts GENERATE group, SUM(counts.match_count) / COUNT(counts.match_count);
+STORE result INTO '/data/occurrenceAvgNum';
+```
+
+
+
 ## **Reference**
 
 1. Setting up a Single Node Cluster. https://hadoop.apache.org/docs/r2.9.2/hadoop-project-dist/hadoop-common/SingleCluster.html
@@ -2018,4 +2076,7 @@ After 10hrs running, because of lack of disk memory, the task was killed.
 2.  Community Detection MapReduce:https://blog.csdn.net/qq_45347768/article/details/127498788
 2.  Set map tasks number: http://www.360doc.com/document/14/0712/10/6590333_393836370.shtml
 2.  Set split size: https://blog.csdn.net/weixin_47350757/article/details/114401953
-
+2.  Pig setup: [Getting Started (apache.org)](https://pig.apache.org/docs/r0.17.0/start.html#Pig+Setup)
+2.  Pig Example：https://blog.csdn.net/fumier/article/details/42294861
+2.  Pig Usage：https://blog.csdn.net/yz930618/article/details/80701617
+2.  Pig Usage1：https://blog.csdn.net/u010010664/article/details/52996542
