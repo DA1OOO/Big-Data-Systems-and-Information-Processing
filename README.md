@@ -2181,7 +2181,7 @@ LIMIT 20);
 
 ![image-20230226191423752](README.assets/image-20230226191423752.png)
 
-#### d.Compare with pig
+#### d. Compared with pig
 
 ​		Hive spend 1mins,17sec on task.
 
