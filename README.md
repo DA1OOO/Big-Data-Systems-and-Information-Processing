@@ -2058,6 +2058,8 @@ After joint.
 
 #### c. Compute avg of occurrences per year.
 
+`pig`：
+
 ```pig
 counts = LOAD '/data/googlebooks-eng-all-1gram-20120701-a/googlebooks-eng-all-1gram-20120701-a' as (bigram:chararray, year:chararray, match_count:double, volume_count:int);
 grouped_counts = GROUP counts BY bigram;
@@ -2065,7 +2067,129 @@ result = FOREACH grouped_counts GENERATE group, SUM(counts.match_count) / COUNT(
 STORE result INTO '/data/occurrenceAvgNum';
 ```
 
+​	Result tail:
 
+![image-20230223100939293](README.assets/image-20230223100939293.png)
+
+
+
+#### d. Get top 20 bigram
+
+```pig
+counts = LOAD '/data/googlebooks-eng-all-1gram-20120701-a/googlebooks-eng-all-1gram-20120701-a' as (bigram:chararray, year:chararray, match_count:double, volume_count:int);
+grouped_counts = GROUP counts BY bigram;
+result = FOREACH grouped_counts GENERATE group, SUM(counts.match_count) / COUNT(counts.match_count);
+order_result = ORDER result BY $1 DESC;
+top20_order_result = LIMIT order_result 20;
+STORE top20_order_result INTO '/data/top20Bigram';
+```
+
+​	Top 20 bigrams with the highest average number of occurrences:
+
+![image-20230223105641143](README.assets/image-20230223105641143.png)
+
+
+
+### Basic Operations of Hive
+
+apache-hive-2.3.9-bin
+
+#### a. Hive Installation
+
+​	Download Hive.
+
+​	Unpack it.
+
+​	Set environmental variables.
+
+![image-20230223162115445](README.assets/image-20230223162115445.png)
+
+​	source it.
+
+```shell
+source /etc/profile.d
+```
+
+​	add follow setting to `hive-site.xml`:
+
+```xml
+<property>
+    <name>system:java.io.tmpdir</name>
+    <value>/home/dai_hk/opt/module/apache-hive-2.3.9-bin/iotempdir</value>
+</property>
+<property>
+    <name>system:user.name</name>
+    <value>dai_hk</value>
+</property>
+```
+
+​	Installation success !
+
+![image-20230223162223584](README.assets/image-20230223162223584.png)
+
+​	Initialize metstore.
+
+```shell
+bin/schematool -dbType derby -initSchema
+```
+
+![image-20230226122939435](README.assets/image-20230226122939435.png)
+
+#### b. Hive table initialization
+
+​		Create hive table.
+
+![image-20230226124917634](README.assets/image-20230226124917634.png)
+
+```sql
+CREATE TABLE book_grams(
+    bigram string,
+    year string,
+    match_count int,
+    volume_count int
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';
+```
+
+​		Put HDFS file into Hive database.
+
+```sql
+LOAD DATA INPATH '/data/book_grams/googlebooks-eng-all-1gram-20120701-a'
+INTO TABLE book_grams;
+```
+
+​		Load data success.
+
+![image-20230226130726795](README.assets/image-20230226130726795.png)
+
+#### c. Compute avg of occurrences per year
+
+```sql
+CREATE TABLE bigram_avg_occurs AS
+(SELECT bigram, SUM(match_count)/COUNT(match_count) AS avg_occurs
+FROM book_grams
+GROUP BY bigram
+ORDER BY avg_occurs DESC
+LIMIT 20);
+```
+
+​		Start MapReduce task.
+
+![image-20230226191349146](README.assets/image-20230226191349146.png)
+
+​		  Result:
+
+![image-20230226191423752](README.assets/image-20230226191423752.png)
+
+#### d.Compare with pig
+
+​		Hive spend 1mins,17sec on task.
+
+![image-20230226191636159](README.assets/image-20230226191636159.png)
+
+​		Pig spend 4mins, 29sec on task.
+
+![image-20230226192120372](README.assets/image-20230226192120372.png)
 
 ## **Reference**
 
