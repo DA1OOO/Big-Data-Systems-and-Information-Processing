@@ -345,7 +345,8 @@ ROW FORMAT DELIMITED FIELDS TERMINATED BY ' ';
 ​		2. Load sample data into table.
 
 ```sql
-load data inpath '/data/small/small_relation_simple' into table blog_relation;
+create table blog_relation(followee_id string, follower_id string)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ' ';
 ```
 
 ​	![image-20230308200935913](PigHiveDetection-SparkPageRank.assets/image-20230308200935913.png)
