@@ -1,12 +1,10 @@
-## Pig，Hive，Spark ##
-
 ### Basic Operation of Pig
 
 #### a. Pig Installation
 
 ​	Download Pig from Apache.
 
-​	Unpack it.
+​	Unpack it.   2023/3/11 DAI Yayuan 1155182964
 
 ```shell
 tar -xvf pig-0.17.0.tar.gz
@@ -531,12 +529,12 @@ object PageRank {
 
   def main(args: Array[String]): Unit = {
 
-    val sparkConf = new SparkConf().setMaster("local").setAppName("PageRank")
+    val sparkConf = new SparkConf().setAppName("PageRank")
     val sc = new SparkContext(sparkConf)
 
     // 读取文件
     // 也可以是HDFS路径
-    val fileRDD: RDD[String] = sc.textFile("hdfs://hadoop1/data/pagerank-data/web-Google.txt").persist()
+    val fileRDD: RDD[String] = sc.textFile("hdfs://hadoop1:50070/data/pagerank-data/web-Google.txt").persist()
 
     // 将page分隔后，生成rank记录表 保存rank分数，每行为一个page，rank默认为1
     val pageRDD: RDD[String] = fileRDD.flatMap(_.split("\t"))
@@ -565,15 +563,109 @@ object PageRank {
 ​	Pack scala code to .jar and submit it to spark cluster.
 
 ```shell
-spark-submit --deploy-mode cluster --master yarn PageRank.jar
+bin/spark-submit \
+--class com.dai.bigdata.spark.core.PageRank \
+--master yarn \
+--deploy-mode cluster \
+./home/dai_hk/spark-core-1.0.SNAPSHOT.jar
 ```
 
 ​	Get top 100 pages.
 
-![image-20230310234752663](PigHiveDetection-SparkPageRank.assets/image-20230310234752663.png)
+![image-20230311095505941](PigHiveDetection-SparkPageRank.assets/image-20230311095505941.png)
 
-![image-20230310234819767](PigHiveDetection-SparkPageRank.assets/image-20230310234819767.png)
-
-![image-20230310234835812](PigHiveDetection-SparkPageRank.assets/image-20230310234835812.png)
+![image-20230311095534087](PigHiveDetection-SparkPageRank.assets/image-20230311095534087.png)
 
 #### task b 
+
+​		When building RDD or reading files, you can specify the number of partitions, and then Spark will perform parallel calculations based on the number of partitions.
+
+```scala
+//Set the number of partitions to 4 when reading from memory
+SparkContect.makeRDD (List (1,2,3,4), 4)
+//Set the number of partitions to 2 when reading a file
+sc.textFile ("filePath", minPartitions=2)
+```
+
+​		When the number of partitions is not transferred, the number of partitions defaultParallelism will be arranged by default.
+
+```scala
+defaultParallelism = total.Cores
+```
+
+​		Because VMs core is 2 CPUs, the defaultParallelism will be 2.
+
+![image-20230311131504524](PigHiveDetection-SparkPageRank.assets/image-20230311131504524.png)
+	Finally, several files of the partition will be output.
+
+​		Using **partitionNum** to set partitions number.
+
+```java
+package com.dai.bigdata.spark.core
+
+import org.apache.spark.rdd.RDD
+import org.apache.spark.{HashPartitioner, SparkConf, SparkContext}
+
+object PageRank {
+
+  def main(args: Array[String]): Unit = {
+
+    val sparkConf = new SparkConf().setAppName("PageRank-2")
+    val sc = new SparkContext(sparkConf)
+    //分区数 2 / 8 / 16
+    val partitionNum = 2
+    // 读取文件
+    // 也可以是HDFS路径
+    val fileRDD: RDD[String] = sc.textFile("HDFS://hadoop1:50070/data/pagerank-data", partitionNum).persist()
+
+    // 将page分隔后，生成rank记录表 保存rank分数，每行为一个page，rank默认为1
+    val pageRDD: RDD[String] = fileRDD.flatMap(_.split("\t"))
+    var ranks: RDD[(String, Double)] = pageRDD.distinct().map {
+      (_, 1.0)
+    }
+    // 将每一列构建成一组k-v对: from - List(To)
+    val pagePair = fileRDD.map { line =>
+      val token = line.split("\t")
+      (token(0), List(token(1)))
+    }.distinct()
+
+    // 按fromPage为key进行聚合，value通过:::进行List的追加
+    val links: RDD[(String, List[String])] = pagePair.reduceByKey(_ ::: _).partitionBy(new HashPartitioner(10)).persist()
+    for (_ <- 0 until 10) {
+      val contributions: RDD[(String, Double)] = links.join(ranks).flatMap {
+        case (_, (links, rank)) =>
+          links.map(dest => (dest, rank / links.size))
+      }
+      ranks = contributions.reduceByKey((x, y) => x + y).mapValues(v => 0.15 + 0.85 * v)
+    }
+    // 结果按value的降序保存到文件
+    ranks.sortBy(f => f._2, false).saveAsTextFile("result")
+  }
+}
+```
+
+​		Modify different partitions number like **2 / 8 / 16**.
+
+​		Then submit it to cluster.
+
+```java
+spark-submit \
+--class com.dai.bigdata.spark.core.PageRank#main \
+--master yarn \
+--deploy-mode cluster \
+../../../../spark-core-1.0-SNAPSHOT.jar
+```
+
+​		`numPartitions=2`: 1.3min
+
+![image-20230311232022411](PigHiveDetection-SparkPageRank.assets/image-20230311232022411.png)
+
+​		`numPartitions=8`: 1.2min
+
+![image-20230311232030466](PigHiveDetection-SparkPageRank.assets/image-20230311232030466.png)
+
+​		`numPartitions=16`: 59s
+
+![image-20230311232038591](PigHiveDetection-SparkPageRank.assets/image-20230311232038591.png)
+
+​		With the increase of the number of partitions, the parallel computing capacity has been improved, but the improvement is priority. Therefore, when choosing CPU resources and speed, we need to weigh them.
