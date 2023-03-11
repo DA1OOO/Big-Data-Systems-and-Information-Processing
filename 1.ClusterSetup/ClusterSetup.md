@@ -1,6 +1,4 @@
-## Cluster Setup
-
-<img src="ClusterSetup.assets/%E6%88%AA%E5%B1%8F2023-01-12%2016.48.58.png" alt="截屏2023-01-12 16.48.58" style="zoom:50%;" />
+![image-20230311233104228](ClusterSetup.assets/image-20230311233104228.png)
 
 ###  **1. Create Virtual Machine**
 

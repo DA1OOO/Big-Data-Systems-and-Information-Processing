@@ -1,6 +1,6 @@
-## **MapReduce ( Community Detection )**
+![image-20230311233138733](CommunityDetection.assets/image-20230311233138733.png)
 
-### **1. Create Maven Project.**
+## **1. Create Maven Project.**
 
 ​	Using `pom.xml` to manage dependencies:
 
