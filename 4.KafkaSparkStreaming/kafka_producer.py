@@ -1,36 +1,31 @@
+# coding=utf-8
 import os
-import random
 import time
 
-# modify this function to convert the ts to seconds  
-def convert_to_seconds(ts): 
-    return ts
 
-# modify this function, the sleep time should based on the time in the data
-def random_sleep(ts):
+# 取出时间中的秒数
+def convert_to_seconds(ts):
+    second = ts[-2:]
+    return second
 
-    t = random.randint(1, 4) # modify this line
-    time.sleep(t)
 
 def main():
     last_ts = None
-    with open('bitcoin_twitter.txt') as f:
+    with open(
+            "C:\Users\Administrator\Desktop\Big-Data-Systems-and-Information-Processing\4.KafkaSparkStreaming\data\new_tweets.txt") as f:
         for line in f:
-
-            # split the text and timestamp
+            # 划分文本和时间戳
             parts = line.rstrip().split(',')
             text = ' '.join(parts[:-1])
             ts = parts[-1]
-
-            ts = convert_to_seconds(ts)     
-
-            cmd = 'echo "' + text + '" | ./bin/kafka-console-producer.sh --broker-list localhost:9092 --topic bitcoin'
-            
+            # 当前推文时间戳
+            ts = convert_to_seconds(ts)
+            # 向Kafka生产者发送消息
+            cmd = 'echo "' + text + '" | kafka-console-producer.sh --broker-list hadoop3:9092 --topic bitcoin'
             os.system(cmd)
-
+            # 模拟时间间隔
             if last_ts is not None:
-                random_sleep(ts)
-
+                time.sleep(abs(int(ts) - int(last_ts)) % 5)
             last_ts = ts
 
 
