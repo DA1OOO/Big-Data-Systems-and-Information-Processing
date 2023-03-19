@@ -176,9 +176,9 @@ object NineYearCrimeDataProcess {
 }
 ```
 
-1. **Merge** 9 tables into one.
+1. **Merge 9 tables into one.**
 
-2. Get `Method` and `Year` from data.
+2. **Get `Method` and `Year` from data.**
 
 ```scala
 val time_method = merged_data.select(substring(merged_data("REPORT_DAT"),0, 4) as("YEAR"), merged_data("METHOD"))
@@ -188,7 +188,7 @@ val time_method = merged_data.select(substring(merged_data("REPORT_DAT"),0, 4) a
 
 ![image-20230316124853195](KafkaSparkStreaming.assets/image-20230316124853195.png)
 
-3. Get total crime numbers of every year.
+3. **Get total crime numbers of every year.**
 
 ```scala
 val yearlyCrimeNums = timeMethod.groupBy("YEAR").count().orderBy("YEAR")
@@ -198,7 +198,7 @@ val yearlyCrimeNums = timeMethod.groupBy("YEAR").count().orderBy("YEAR")
 
 ![image-20230316125539232](KafkaSparkStreaming.assets/image-20230316125539232.png)
 
-4. Get **gun** crime numbers of ever year.
+4. **Get gun crime numbers of ever year.**
 
    ```scala
     val yearlyGunCrimeNums = timeMethod.groupBy("YEAR", "METHOD").count().select("YEAR","count").where("METHOD == 'GUN'")
@@ -206,7 +206,7 @@ val yearlyCrimeNums = timeMethod.groupBy("YEAR").count().orderBy("YEAR")
 
    ![image-20230316130011083](KafkaSparkStreaming.assets/image-20230316130011083.png)
 
-5. Join two table on same `YEAR`.
+5. **Join two table on same `YEAR`.**
 
    ```scala
    val joined_table = newYearlyCrimeNums.join(yearlyGunCrimeNums, newYearlyCrimeNums("YEAR_") === yearlyGunCrimeNums("YEAR"), "inner")
@@ -216,7 +216,7 @@ val yearlyCrimeNums = timeMethod.groupBy("YEAR").count().orderBy("YEAR")
 
 ![image-20230316131431421](KafkaSparkStreaming.assets/image-20230316131431421.png)
 
-6. Pack code and submit it into Spark Cluster, then we get percentage of **gun** using.
+6. **Pack code and submit it into Spark Cluster, then we get percentage of gun using.**
 
    ```scala
    val result = joined_table.select(joined_table("YEAR"), joined_table("count") / joined_table("total_crime_count") as("gun_percentage")).orderBy("YEAR")
@@ -234,7 +234,7 @@ val yearlyCrimeNums = timeMethod.groupBy("YEAR").count().orderBy("YEAR")
 
    ![image-20230316132442865](KafkaSparkStreaming.assets/image-20230316132442865.png)
 
-7. Therefore, we found that after Obama took office, the rate of armed crime has been steadily **declining**.
+7. **Therefore, we found that after Obama took office, the rate of armed crime has been steadily declining.**
 
 ## Q2 Kafka Cluster Setup
 
@@ -243,9 +243,9 @@ val yearlyCrimeNums = timeMethod.groupBy("YEAR").count().orderBy("YEAR")
 | Zookeeper | Zookeeper |
 | Kafka     | Kafka     |
 
-1. Download Kafka and unzip it.
+1. **Download Kafka and unzip it.**
 
-2. Then add settings `server.properties`.
+2. **Then add settings `server.properties`.**
 
    Hadoop3 - broker.id = 1 and Hadoop4 - broker.id = 2
 
@@ -254,7 +254,7 @@ val yearlyCrimeNums = timeMethod.groupBy("YEAR").count().orderBy("YEAR")
    zookeeper.connect=hadoop3:2181,hadoop4:2181/kafka
    ```
 
-3. Modify **environmental variables**.
+3. **Modify environmental variables.**
 
 ```shell
 #KAFKA_HOME
@@ -262,7 +262,7 @@ export KAFKA_HOME=/opt/module/kafka
 export PATH=$PATH:$KAFKA_HOME/bin
 ```
 
- 4. Setup **Zookeeper** Cluster.
+ 4. **Setup Zookeeper Cluster.**
 
     - set myid in every linux differently.
     - modify `zoo.cfg`
@@ -284,7 +284,7 @@ export PATH=$PATH:$KAFKA_HOME/bin
 
     ![image-20230318160628027](KafkaSparkStreaming.assets/image-20230318160628027.png)
 
-5. Start Kafka Cluster respectively.
+5. **Start Kafka Cluster respectively.**
 
 ```shell
 kafka-server-start.sh -daemon config/server.properties
@@ -298,7 +298,7 @@ kafka-server-start.sh -daemon config/server.properties
 
 ![image-20230318163920642](KafkaSparkStreaming.assets/image-20230318163920642.png)
 
-6. Create topic
+6. **Create topic**
 
 ```shell
 kafka-topics.sh --bootstrap-server hadoop3:9092 --create --partitions 2 --replication-factor 2 --topic my-test-topic
@@ -306,7 +306,7 @@ kafka-topics.sh --bootstrap-server hadoop3:9092 --create --partitions 2 --replic
 
 ![image-20230318164128298](KafkaSparkStreaming.assets/image-20230318164128298.png)
 
-7. See the details of the topic.
+7. **See the details of the topic.**
 
 ```shell
 kafka-topics.sh --bootstrap-server hadoop3:9092 --describe --topic my-test-topic
@@ -314,7 +314,7 @@ kafka-topics.sh --bootstrap-server hadoop3:9092 --describe --topic my-test-topic
 
 ![image-20230318164326518](KafkaSparkStreaming.assets/image-20230318164326518.png)
 
-8. Send message.
+8. **Send message.**
 
 ```shell
 kafka-console-producer.sh --broker-list hadoop3:9092 --topic my-test-topic
@@ -322,7 +322,7 @@ kafka-console-producer.sh --broker-list hadoop3:9092 --topic my-test-topic
 
 ![image-20230318164747147](KafkaSparkStreaming.assets/image-20230318164747147.png)
 
-9. Consume message.
+9. **Consume message.**
 
 ```shell
 kafka-console-consumer.sh --bootstrap-server hadoop3:9092 --from-beginning --topic my-test-topic
@@ -334,7 +334,7 @@ kafka-console-consumer.sh --bootstrap-server hadoop3:9092 --from-beginning --top
 
 #### a)  
 
-1. Create new topic called `bitcoin`
+1. **Create new topic called `bitcoin`**
 
 ```shell
 kafka-topics.sh --bootstrap-server hadoop3:9092 --create --partitions 2 --replication-factor 2 --topic bitcoin
@@ -342,7 +342,7 @@ kafka-topics.sh --bootstrap-server hadoop3:9092 --create --partitions 2 --replic
 
 ![image-20230318181100130](KafkaSparkStreaming.assets/image-20230318181100130.png)
 
-2. Write Kafka producer.
+2. **Write Kafka producer.**
 
 ```python
 #coding=utf-8
@@ -362,19 +362,19 @@ def main():
             ts = parts[-1]
             # 当前推文时间戳
             ts = convert_to_seconds(ts)
-            # 向卡夫卡生产者发送消息
+            # 向Kafka生产者发送消息
             cmd = 'echo "' + text + '" | kafka-console-producer.sh --broker-list hadoop3:9092 --topic bitcoin'
             os.system(cmd)
             # 模拟时间间隔
             if last_ts is not None:
-                # 睡两个推文之间的时间间隔
+                # 进程睡眠两个推文之间的时间间隔 最多五秒
                 time.sleep(abs(int(ts) - int(last_ts)) % 5)
             last_ts = ts
 if __name__ == '__main__':
     main()
 ```
 
-3. Run python producer in hadoop3
+3. **Run python producer in hadoop3**
 
 ```shell
 python kafka_producer.py
@@ -382,11 +382,13 @@ python kafka_producer.py
 
 ![image-20230318195610017](KafkaSparkStreaming.assets/image-20230318195610017.png)
 
-3. Get Message from Kafka consumer.
+3. **Get Message from Kafka consumer over time.**
 
 ![image-20230318195501404](KafkaSparkStreaming.assets/image-20230318195501404.png)
 
-## Q4 Most Frequent Hashtags with Spark Structured Streaming
+
+
+#### b)
 
 
 
