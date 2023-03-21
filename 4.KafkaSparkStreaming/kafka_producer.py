@@ -27,6 +27,7 @@ def main():
             if last_ts is not None:
                 time.sleep(abs(int(ts) - int(last_ts)) % 5)
             last_ts = ts
+            print("===> a message have be sent to kafka topic: " + text)
 
 
 if __name__ == '__main__':

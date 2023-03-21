@@ -370,6 +370,7 @@ def main():
                 # 进程睡眠两个推文之间的时间间隔 最多五秒
                 time.sleep(abs(int(ts) - int(last_ts)) % 5)
             last_ts = ts
+            print("===> a message have be sent to kafka topic: " + text)
 if __name__ == '__main__':
     main()
 ```
@@ -390,20 +391,70 @@ python kafka_producer.py
 
 #### b)
 
-1. submit jar to spark cluster.
+1. Write Spark Streaming RDD code.
+
+```scala
+package com.dai
+
+import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRecord}
+import org.apache.spark.SparkConf
+import org.apache.spark.streaming.dstream.{DStream, InputDStream}
+import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils, LocationStrategies}
+import org.apache.spark.streaming.{Seconds, StreamingContext}
+
+import scala.util.matching.Regex
+
+object HashTagStreaming {
+  def main(args: Array[String]): Unit = {
+    val sparkConf: SparkConf = new SparkConf().setAppName("HashTagStreaming")
+    val ssc = new StreamingContext(sparkConf, Seconds(1))
+    val kafkaPara: Map[String, Object] = Map[String, Object](
+      ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG -> "hadoop3:9092,hadoop4:9092",
+      ConsumerConfig.GROUP_ID_CONFIG -> "bitcoin_consumer",
+      "key.deserializer" -> "org.apache.kafka.common.serialization.StringDeserializer",
+      "value.deserializer" -> "org.apache.kafka.common.serialization.StringDeserializer"
+    )
+    val kafkaDStream: InputDStream[ConsumerRecord[String, String]] =
+      KafkaUtils.createDirectStream[String, String](ssc, LocationStrategies.PreferConsistent, ConsumerStrategies.Subscribe[String, String](Set("bitcoin"), kafkaPara))
+    val valueDStream : DStream[String] = kafkaDStream.map(record => record.value())
+    //5.处理队列中的 RDD 数据
+    // 定义找出hashtag的正则表达式，取#开头，空格结尾的数据
+    val pattern = new Regex("#\\w+\\b")
+    val countedStream = valueDStream.flatMap(line => pattern.findAllIn(line)).map((_, 1))
+    // 窗口定义，窗口300s，滑步120s
+    val hashTagCounts = countedStream.reduceByKeyAndWindow((a:Int,b:Int) => (a + b), Seconds(300), Seconds(120))
+    //6.打印结果
+    hashTagCounts.print()
+    // 开启任务
+    ssc.start()
+    ssc.awaitTermination()
+  }
+}
+```
+
+2. Run python kafka producer in Q3 a).
+
+   ![image-20230321210034630](KafkaSparkStreaming.assets/image-20230321210034630.png)
+
+3. **submit jar to spark cluster.**
 
 ```shell
 spark-submit \
 --class com.dai.HashTagStreaming \
 --master yarn \
 --deploy-mode cluster \
-../../../jars/SparkStreaming-1.0-SNAPSHOT-jar-with-dependencies.jar
+/home/dai_hk/opt/jars/SparkStreaming-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
-2. See consumer detail
+![image-20230321213304746](KafkaSparkStreaming.assets/image-20230321213304746.png)
 
-```shell
-kafka-consumer-groups.sh --describe --bootstrap-server hadoop3:9092 --group
-bitcoin_consumer
-```
+4. **See consumer print detail in log.**
+
+![image-20230321213421258](KafkaSparkStreaming.assets/image-20230321213421258.png)
+
+​	We can see in the log that the slide duration is **120000 ms**( 2 mins ), every windows print the tag count.
+
+
+
+## Q4 Spark Structured Streaming
 
