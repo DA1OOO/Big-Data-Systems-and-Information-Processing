@@ -390,5 +390,20 @@ python kafka_producer.py
 
 #### b)
 
+1. submit jar to spark cluster.
 
+```shell
+spark-submit \
+--class com.dai.HashTagStreaming \
+--master yarn \
+--deploy-mode cluster \
+../../../jars/SparkStreaming-1.0-SNAPSHOT-jar-with-dependencies.jar
+```
+
+2. See consumer detail
+
+```shell
+kafka-consumer-groups.sh --describe --bootstrap-server hadoop3:9092 --group
+bitcoin_consumer
+```
 

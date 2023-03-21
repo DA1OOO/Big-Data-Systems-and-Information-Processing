@@ -15,10 +15,11 @@ public class BlogDetection2Reducer extends Reducer<Text, Text, Text, Text> {
     private Text outValue = new Text();
 
     private List<String> list = new ArrayList<>();
-
     @Override
     protected void reduce(Text key, Iterable<Text> values, Reducer<Text, Text, Text, Text>.Context context) throws IOException, InterruptedException {
         outKey.set(key);
+        Set<String> set = new HashSet<>();
+
         for (Text value : values) {
             list.add(value.toString());
         }
