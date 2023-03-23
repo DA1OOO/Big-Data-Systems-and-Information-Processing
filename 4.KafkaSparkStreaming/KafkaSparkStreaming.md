@@ -417,7 +417,6 @@ object HashTagStreaming {
     val kafkaDStream: InputDStream[ConsumerRecord[String, String]] =
       KafkaUtils.createDirectStream[String, String](ssc, LocationStrategies.PreferConsistent, ConsumerStrategies.Subscribe[String, String](Set("bitcoin"), kafkaPara))
     val valueDStream : DStream[String] = kafkaDStream.map(record => record.value())
-    //5.处理队列中的 RDD 数据
     // 定义找出hashtag的正则表达式，取#开头，空格结尾的数据
     val pattern = new Regex("#\\w+\\b")
     val countedStream = valueDStream.flatMap(line => pattern.findAllIn(line)).map((_, 1))
@@ -458,3 +457,50 @@ spark-submit \
 
 ## Q4 Spark Structured Streaming
 
+1. Writer scala consumer code
+
+```scala
+package com.dai
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions._
+object HashTagSqlStreaming {
+  def main(args: Array[String]): Unit = {
+    val pattern = "#\\w+\\s"
+    val spark = SparkSession.builder().appName("HashTagStreamingCount").getOrCreate()
+    val df = spark.readStream.format("kafka").option("kafka.bootstrap.servers", "hadoop3:9092,hadoop3:9092")
+      .option("subscribe", "bitcoin").load().selectExpr("CAST(value AS STRING) as message")
+    // 给列带上时间戳和tag，方便进行窗口函数
+    val time_df = df.select("message.*").withColumn("timestamp", current_timestamp()).withColumn("hashtag", regexp_extract(col("message"), pattern, 0))
+    // 窗口计数
+    val counts = time_df
+      .groupBy(
+        window(col("timestamp"), "5 minutes", "2 minutes"),
+        col("hashtag")
+      ).count().orderBy(col("window"))
+    val query = counts.writeStream.outputMode("complete").format("console").start()
+    query.awaitTermination()
+  }
+}
+
+```
+
+2. Run Python producer to send data to kafka in above question.
+
+![image-20230322140451818](KafkaSparkStreaming.assets/image-20230322140451818.png)
+
+2. Submit Spark Structured Streaming jar to spark cluster.
+
+```shell
+spark-submit \
+--class com.dai.HashTagSqlStreaming \
+--master yarn \
+--deploy-mode cluster \
+--jars spark-sql-kafka-0-10_2.12-3.2.0.jar \
+/home/dai_hk/opt/jars/SparkStreaming-1.0-SNAPSHOT-jar-with-dependencies.jar
+```
+
+![image-20230322141336241](KafkaSparkStreaming.assets/image-20230322141336241.png)
+
+4. Find count out in log , slide duration is **120000 ms**( 2 mins ).
+
+![image-20230322133220411](KafkaSparkStreaming.assets/image-20230322133220411.png)
