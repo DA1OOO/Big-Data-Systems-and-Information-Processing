@@ -12,3 +12,4 @@
 
 #### 5. [Twitter下Hashtags的词频实时统计 —— 基于Spark Streaming, Kafka](https://github.com/DA1OOO/Big-Data-Systems-and-Information-Processing/blob/main/4.KafkaSparkStreaming/KafkaSparkStreaming.md)
 
+#### 6. [机器学习，模式匹配 —— 基于Graph X,Hbase](https://github.com/DA1OOO/Big-Data-Systems-and-Information-Processing/blob/main/5.GraphHbase/GraphFrames%2C%20GraphX%2C%20HBase.pdf)
